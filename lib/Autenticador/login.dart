@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:planner/Autenticador/cadastrar.dart';
 import 'package:planner/JsonModels/usuarios.dart';
+import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/dashboard.dart';
+import 'package:planner/userSession.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -22,10 +24,13 @@ class _TelaLoginState extends State<TelaLogin> {
     var response = await db
         .login(Usuarios(usrName: usuario.text, usrPassword: senha.text));
     if (response == true) {
+      var userId = await db.getIdByName(usuario.text);
+      print(userId);
+      UserSession.setID(userId!);
       //Se o login tiver correto, vai p o dashboard
       if (!mounted) return;
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const Dashboard()));
+          context, MaterialPageRoute(builder: (context) => MainPage()));
     } else {
       //Se o login n tiver correto, mostra msg de erro
       setState(() {
