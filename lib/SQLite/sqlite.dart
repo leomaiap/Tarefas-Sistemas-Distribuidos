@@ -7,11 +7,12 @@ class DatabaseHelper {
 
   String users =
       "create table users (usrId INTEGER PRIMARY KEY AUTOINCREMENT, usrName TEXT UNIQUE, usrPassword TEXT)";
-    
+
   String taskBoard = """CREATE TABLE task_board(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     color INTEGER NOT NULL,
+    icon INTEGER NOT NULL,
     user_id INTEGER NOT NULL,
     FOREIGN KEY(user_id) REFERENCES user(id));""";
 
@@ -27,7 +28,7 @@ class DatabaseHelper {
     isCompleted INTEGER,
     FOREIGN KEY(user_id) REFERENCES user(id),
     FOREIGN KEY(board_id) REFERENCES task_board(id));""";
-  
+
   Future<Database> initDB() async {
     final databasePath = await getDatabasesPath();
     final path = join(databasePath, databaseName);
@@ -40,7 +41,6 @@ class DatabaseHelper {
       await db.execute(task);
     });
   }
-
 
   //Metodo de Login
 
@@ -81,14 +81,16 @@ class DatabaseHelper {
       return null; // Retorna null se não encontrar nenhum usuário com o usrName fornecido
     }
   }
-  
+
   //Criar nova Task board
-  Future<int> insertTaskBoard(String name, int color, int userID) async {
+  Future<int> insertTaskBoard(
+      String name, int color, int icon, int userID) async {
     final Database db = await initDB();
 
     Map<String, dynamic> taskBoardData = {
       'name': name,
       'color': color,
+      'icon': icon,
       'user_id': userID,
     };
 
@@ -96,7 +98,7 @@ class DatabaseHelper {
 
     return id;
   }
- 
+
   //Carregar Todas taskboards do usuario
   Future<List<Map<String, dynamic>>> getTaskBoardsByUserId(int userId) async {
     final Database db = await initDB();
@@ -115,15 +117,17 @@ class DatabaseHelper {
     final Database db = await initDB();
 
     int count = Sqflite.firstIntValue(await db.rawQuery(
-      'SELECT COUNT(*) FROM task WHERE board_id = ?',
-      [taskBoardId],
-    )) ?? 0;
+          'SELECT COUNT(*) FROM task WHERE board_id = ?',
+          [taskBoardId],
+        )) ??
+        0;
 
     return count as int;
   }
 
   //Lista de tarefas passando o taskboardID
-  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(int taskBoardId) async {
+  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(
+      int taskBoardId) async {
     final Database db = await initDB();
 
     List<Map<String, dynamic>> result = await db.query(

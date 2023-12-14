@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/concluidas.dart';
 import 'package:planner/Views/dashboard.dart';
 import 'package:planner/Views/pesquisa.dart';
 import 'package:planner/Views/recentes.dart';
 
 class MainPage extends StatefulWidget {
-  
   MainPage({super.key});
 
   @override
@@ -15,13 +15,11 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int indexPage = 0;
-  final pages = [Dashboard(),
-                Pesquisa(),
-                Concluidas(),
-                Recentes()];
+  final pages = [Dashboard(), Pesquisa(), Concluidas(), Recentes()];
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: pages[indexPage],
       bottomNavigationBar: NavigationBarTheme(
@@ -41,18 +39,18 @@ class _MainPageState extends State<MainPage> {
                 selectedIcon: Icon(Icons.dashboard_rounded),
               ),
               NavigationDestination(
-                  icon: Icon(Icons.calendar_month_outlined),
-                  label: 'Pesquisar',
-                  selectedIcon: Icon(Icons.calendar_month),
-                  ),
+                icon: Icon(Icons.calendar_month_outlined),
+                label: 'Pesquisar',
+                selectedIcon: Icon(Icons.calendar_month),
+              ),
               NavigationDestination(
-                  icon: Icon(Icons.task_alt),
-                  label: 'Concluidas',
-                  ),
+                icon: Icon(Icons.task_alt),
+                label: 'Concluidas',
+              ),
               NavigationDestination(
-                  icon: Icon(Icons.schedule),
-                  label: 'Recentes',
-                  ),
+                icon: Icon(Icons.schedule),
+                label: 'Recentes',
+              ),
             ]),
       ),
     );

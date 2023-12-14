@@ -22,31 +22,31 @@ class _DashboardState extends State<Dashboard> {
     super.initState();
     _getTaskBoardDB();
   }
-  
-  _getTaskBoardDB() async{
-    List<Map<String, dynamic>> list = await db.getTaskBoardsByUserId(UserSession.getID());
+
+  _getTaskBoardDB() async {
+    List<Map<String, dynamic>> list =
+        await db.getTaskBoardsByUserId(UserSession.getID());
     setState(() {
       taskBoardsList = list;
     });
     print(taskBoardsList);
   }
-  
 
   @override
-  Widget build(BuildContext context) {   
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Dashboard", style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),
+        title: Text(
+          "Dashboard",
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           IconButton(
             icon: Icon(Icons.logout),
             onPressed: () {
-              Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const TelaLogin()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const TelaLogin()));
             },
           ),
         ],
@@ -58,36 +58,38 @@ class _DashboardState extends State<Dashboard> {
           itemCount: taskBoardsList.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
-            crossAxisSpacing: 10,),
+            crossAxisSpacing: 10,
+          ),
           itemBuilder: (context, index) {
             return GestureDetector(
-            onTap: () {
-              Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => OpenTaskBoard(
+                onTap: () {
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => OpenTaskBoard(
+                                name: taskBoardsList[index]['name'],
+                                color: taskBoardsList[index]['color'] as int,
+                                taskBoardID: taskBoardsList[index]['id'] as int,
+                              )));
+                },
+                child: Container(
+                    child: TaskBoardCard(
                   name: taskBoardsList[index]['name'],
                   color: taskBoardsList[index]['color'] as int,
+                  icon: taskBoardsList[index]['icon'] as int,
                   taskBoardID: taskBoardsList[index]['id'] as int,
-              )));
-            },
-              child: Container(
-                child: TaskBoardCard(
-                  name: taskBoardsList[index]['name'],
-                  color: taskBoardsList[index]['color'] as int,
-                  taskBoardID: taskBoardsList[index]['id'] as int,
-                )
-              )
-            );
-          },),
+                )));
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         icon: Icon(Icons.add_box),
         onPressed: () {
-          Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const NewTaskBoard()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const NewTaskBoard()));
         },
-        label: Text('Novo Quadro'),),
-           
+        label: Text('Novo Quadro'),
+      ),
     );
-    
   }
 }
