@@ -12,7 +12,7 @@ class DayCard extends StatelessWidget {
     if (isSelected){
       return Container(
           decoration: BoxDecoration(
-          color: Colors.blueGrey,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.all(Radius.circular(8))
         ),
         child: Container(

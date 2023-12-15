@@ -24,7 +24,8 @@ class _MainPageState extends State<MainPage> {
       body: pages[indexPage],
       bottomNavigationBar: NavigationBarTheme(
         data: NavigationBarThemeData(
-            indicatorColor: Colors.blueGrey.withOpacity(0.5)),
+        indicatorColor: Theme.of(context).colorScheme.primary.withOpacity(0.8),
+        backgroundColor: Theme.of(context).colorScheme.background),
         child: NavigationBar(
             selectedIndex: indexPage,
             onDestinationSelected: (value) {
