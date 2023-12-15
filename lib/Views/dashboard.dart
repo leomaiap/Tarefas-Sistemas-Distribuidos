@@ -52,44 +52,89 @@ class _DashboardState extends State<Dashboard> {
         ],
         centerTitle: true,
       ),
-      body: Container(
-        padding: EdgeInsets.all(15),
-        child: GridView.builder(
-          itemCount: taskBoardsList.length,
-          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2,
-            crossAxisSpacing: 10,
-          ),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-                onTap: () {
-                  Navigator.pushReplacement(
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(15),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Bem-Vindo", style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 26
+                ),),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => OpenTaskBoard(
-                                name: taskBoardsList[index]['name'],
-                                color: taskBoardsList[index]['color'] as int,
-                                taskBoardID: taskBoardsList[index]['id'] as int,
-                              )));
+                          builder: (context) => const NewTaskBoard()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          10.0), // Ajuste o valor conforme necessário
+                    ),
+                    backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                    foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.add), // Ícone que você deseja adicionar
+                      SizedBox(width: 2), // Espaçamento entre o ícone e o texto
+                      Text('Novo Quadro'),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: GridView.builder(
+                itemCount: taskBoardsList.length,
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 18,
+                    mainAxisSpacing: 18),
+                itemBuilder: (context, index) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => OpenTaskBoard(
+                                      name: taskBoardsList[index]['name'],
+                                      color:
+                                          taskBoardsList[index]['color'] as int,
+                                      taskBoardID:
+                                          taskBoardsList[index]['id'] as int,
+                                    )));
+                      },
+                      child: Container(
+                          child: TaskBoardCard(
+                        name: taskBoardsList[index]['name'],
+                        color: taskBoardsList[index]['color'] as int,
+                        icon: taskBoardsList[index]['icon'] as int,
+                        taskBoardID: taskBoardsList[index]['id'] as int,
+                      )));
                 },
-                child: Container(
-                    child: TaskBoardCard(
-                  name: taskBoardsList[index]['name'],
-                  color: taskBoardsList[index]['color'] as int,
-                  icon: taskBoardsList[index]['icon'] as int,
-                  taskBoardID: taskBoardsList[index]['id'] as int,
-                )));
-          },
-        ),
+              ),
+            ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.add_box),
-        onPressed: () {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const NewTaskBoard()));
-        },
-        label: Text('Novo Quadro'),
-      ),
+      // floatingActionButton: FloatingActionButton.extended(
+      //   icon: Icon(Icons.add_box),
+      //   onPressed: () {
+      //     Navigator.pushReplacement(context,
+      //         MaterialPageRoute(builder: (context) => const NewTaskBoard()));
+      //   },
+      //   label: Text('Novo Quadro'),
+      // ),
     );
   }
 }

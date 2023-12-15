@@ -40,8 +40,7 @@ class DayCard extends StatelessWidget {
     else{
       return Container(
         decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.all(Radius.circular(8))
+        color: Colors.transparent
       ),
       child: Container(
         child:Column(

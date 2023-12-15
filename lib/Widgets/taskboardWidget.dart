@@ -19,30 +19,23 @@ class TaskBoardCard extends StatefulWidget {
 
 class _TaskBoardCardState extends State<TaskBoardCard> {
   List<Color> colorsList = [
-    Colors.red,
-    Colors.orange,
-    Colors.yellow,
-    Colors.green,
-    Colors.lightGreen,
-    Colors.lightBlue,
-    Colors.blueAccent,
-    Colors.purple,
-    Colors.deepPurple,
-    Colors.pinkAccent,
-    Colors.pink,
-    Colors.brown,
-    Colors.grey,
-    Colors.blueGrey
+    Color(0xFFD7423D),
+    Color(0xFFFFE066),
+    Color(0xFFFFBA59),
+    Color(0xFFFF8C8C),
+    Color(0xFFFF99E5),
+    Color(0xFFC3A6FF),
+    Color(0xFF9FBCF5),
+    Color(0xFF8CE2FF),
+    Color(0xFF87F5B5),
+    Color(0xFFBCF593),
+    Color(0xFFE2F587),
+    Color(0xFFD9BCAD),
+    Colors.grey.shade50
   ];
 
-  // List<IconData> iconList = [
-  //   Icons.fitness_center,
-  //   Icons.health_and_safety,
-  //   Icons.book,
-  //   Icons.favorite,
-  //   Icons.work,
-  //   Icons.tv
-  // ];
+  late Color color1;
+  late Color color2;
 
   final db = DatabaseHelper();
 
@@ -50,6 +43,8 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
   void initState() {
     super.initState();
     _quantTarefas();
+    color1 = colorsList[widget.color];
+    color2 = modifyColor(colorsList[widget.color], -120);
   }
 
   String countTasks = '';
@@ -67,77 +62,93 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
     });
   }
 
+  //Mudar o tom da cor
+  Color modifyColor(Color originalColor, int brightness) {
+    int red = originalColor.red + brightness;
+    int green = originalColor.green + brightness;
+    int blue = originalColor.blue + brightness;
+
+    red = red.clamp(0, 255);
+    green = green.clamp(0, 255);
+    blue = blue.clamp(0, 255);
+
+    return Color.fromARGB(255, red, green, blue);
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     IconData icon = IconLabel.values[widget.icon!].icon;
     //double screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        Container(
+    return Container(
+          padding: EdgeInsets.all(8),
           decoration: BoxDecoration(
-              color: colorsList[widget.color],
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(screenWidth * 0.020),
-                  topRight: Radius.circular(screenWidth * 0.020))),
-          height: screenWidth * 0.3,
-          width: screenWidth * 0.5,
+              color: color1,
+              borderRadius: BorderRadius.all(Radius.circular(screenWidth * 0.050))),
           child: Container(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                    alignment: Alignment.centerLeft,
+                  margin: EdgeInsets.symmetric(vertical: 15),
+                  child: Icon(
+                    icon,
+                    size: screenWidth * 0.12,
+                    color: color2,
+                  ),
+                ),
+                Container(
+                    alignment: Alignment.center,
                     padding: EdgeInsets.only(left: screenWidth * 0.025),
                     child: Text(
                       widget.name,
                       style: TextStyle(
                           fontSize: screenWidth * 0.06,
-                          fontWeight: FontWeight.bold),
-                    )),
-                Icon(
-                  icon,
-                  size: screenWidth * 0.12,
-                )
-              ],
-            ),
-          ),
-        ),
-        Container(
-          decoration: BoxDecoration(
-              color: colorsList[widget.color].withOpacity(0.8),
-              borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(screenWidth * 0.020),
-                  bottomRight: Radius.circular(screenWidth * 0.020))),
-          height: screenWidth * 0.1,
-          width: screenWidth * 0.5,
-          child: Container(
-            child: Container(
-                alignment: Alignment.centerLeft,
+                          fontWeight: FontWeight.bold,
+                          color: color2),
+                )),
+                Container(
+                alignment: Alignment.center,
                 padding: EdgeInsets.only(left: screenWidth * 0.025),
                 child: Text(
                   countTasks,
                   style: TextStyle(
-                      fontSize: screenWidth * 0.04,
-                      fontWeight: FontWeight.bold),
+                      fontSize: screenWidth * 0.03,
+                      color: color2),
                 )),
+              ],
+            ),
           ),
-        ),
-      ],
-    );
+        );
   }
 }
 
 enum IconLabel {
   exercise('Exercício', Icons.fitness_center),
-  health(
-    'Saúde',
-    Icons.health_and_safety,
-  ),
+  health('Saúde', Icons.health_and_safety),
   book('Estudo', Icons.book),
   heart('Hobby', Icons.favorite),
   work('Trabalho', Icons.work),
-  fun('Diversão', Icons.tv);
+  fun('Diversão', Icons.tv),
+  shopping('Compras', Icons.shopping_cart),
+  meeting('Reunião', Icons.group),
+  Aniversario('Aniversario', Icons.cake),
+  assignment('Atribuição', Icons.assignment),
+  travel('Viagem', Icons.flight_takeoff),
+  coding('Programação', Icons.code),
+  cooking('Cozinha', Icons.restaurant),
+  finance('Finanças', Icons.attach_money),
+  music('Música', Icons.music_note),
+  coffee('Café', Icons.local_cafe),
+  puzzle('Quebra-cabeça', Icons.extension),
+  alarm('Alarme', Icons.alarm),
+  list('Lista', Icons.list),
+  map('Mapa', Icons.map),
+  paint('Arte', Icons.palette),
+  pet('Animal de Estimação', Icons.pets),
+  photo('Fotografia', Icons.photo),
+  shoppingBag('Sacola de Compras', Icons.shopping_bag);
 
   const IconLabel(this.label, this.icon);
   final String label;
