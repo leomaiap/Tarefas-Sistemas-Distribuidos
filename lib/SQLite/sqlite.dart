@@ -99,6 +99,26 @@ class DatabaseHelper {
     return id;
   }
 
+  //Cadastrar Tarefa
+  Future<int> insertTask(String title, String note, int isCompleted, String startTime, String endTime, String date, int boardID, int userID) async {
+    final Database db = await initDB();
+
+    Map<String, dynamic> taskBoardData = {
+      'title': title,
+      'note': note,
+      'isCompleted': isCompleted,
+      'startTime': startTime,
+      'endTime': endTime,
+      'date': date,
+      'board_id': boardID,
+      'user_id': userID,
+    };
+
+    int id = await db.insert('task', taskBoardData);
+
+    return id;
+  }
+
   //Carregar Todas taskboards do usuario
   Future<List<Map<String, dynamic>>> getTaskBoardsByUserId(int userId) async {
     final Database db = await initDB();
