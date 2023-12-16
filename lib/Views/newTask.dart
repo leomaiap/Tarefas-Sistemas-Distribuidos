@@ -34,6 +34,11 @@ class _NewTaskState extends State<NewTask> {
 
   final db = DatabaseHelper();
 
+  String getDateDisplay(){
+    if(dateVazio){return "  Data: Não selecionada ainda.";}
+    return "  Data: " + date;
+  }
+
   List<Color> colorsList = [
     Color(0xFFD7423D),
     Color(0xFFFFE066),
@@ -50,6 +55,18 @@ class _NewTaskState extends State<NewTask> {
     Colors.grey.shade50
     ];
 
+  void updateDate(DateTime? dt){
+    if(dt==null){return;}
+    setState(() {
+      dateVazio = false;
+      date = dt.toString().split(' ')[0];
+    });
+  }
+  void _showDatePicker(){
+    print('hyyyy');
+    showDatePicker(context: context, initialDate: DateTime.now(),
+        firstDate: DateTime(2000), lastDate:  DateTime(2030)).then((value) => updateDate(value));
+  }
   @override
   Widget build(BuildContext context) {
     //double screenWidth = MediaQuery.of(context).size.width;
@@ -103,27 +120,32 @@ class _NewTaskState extends State<NewTask> {
                   });
                 },
               ),
-              const SizedBox(height: 10,),
+              const SizedBox(height: 20,),
+              Center(
+                child: SizedBox(
+                  width:335,
+                  child: MaterialButton(onPressed: (){_showDatePicker();},
+                    child: Padding(
+                      padding: EdgeInsets.all(4),
+                        child: Text("Pick Date",
+                        style: TextStyle(
+                          color:Colors.white,
+                          fontSize:25
+                            )
+                      ),
+                    ),
+                      color: colorsList[widget.color],
 
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Data da tarefa",
+                  ),
                 ),
+              ),
+
+              Text(getDateDisplay(),
                 style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: dateController,
-                onChanged: (String value) {
-                  date = value;
-                  //print(nome);
-                  setState(() {
-                    dateVazio = value.isEmpty;
-                  });
-                },
+                  fontSize: 21,
+                  fontWeight: FontWeight.bold,
+
+                ),
               ),
               const SizedBox(height: 10,),
 
