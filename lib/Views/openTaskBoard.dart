@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/newTask.dart';
+import 'package:planner/taskList/taskListBuilder.dart';
+
+import '../userSession.dart';
 
 class OpenTaskBoard extends StatefulWidget {
   String name;
@@ -33,21 +36,19 @@ List<Color> colorsList = [
 
 class _OpenTaskBoardState extends State<OpenTaskBoard> {
   final db = DatabaseHelper();
-  List<Map<String, dynamic>> taskList = [];
+  List<Map<String, dynamic>> listTask = [];
+  late Future<List<Map<String, dynamic>>> futureTaskList;
 
   @override
   void initState() {
     super.initState();
-    // pegar dados do banco de dados
-    _getTaskDB(widget.taskBoardID);
-    setState(() {
-      
-    });
+    futureTaskList = _getTaskList();
   }
 
-  _getTaskDB(int taskBoardID) async{
-    // taskList recebe as tasks que tem taskBoardID como referencia
-    // get do banco de dados
+  Future<List<Map<String, dynamic>>> _getTaskList() async {
+    List<Map<String, dynamic>> list =
+        await db.getTasksByTaskBoard(widget.taskBoardID);
+    return list;
   }
 
   @override
@@ -69,13 +70,18 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
         centerTitle: true,
       ),
 
-      body:Container(
-        decoration: BoxDecoration(
-          color: colorsList[widget.color].withOpacity(0.5)
-        ),
-        child: Text("Implementar"),
-        // Listview builder no taskList
-        // Criar um widget TaskWidget(parametros construtor...),
+      body: FutureBuilder<List<Map<String, dynamic>>>(
+        future: futureTaskList,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Container();
+          } else if (snapshot.hasError) {
+            return Text('Erro: ${snapshot.error}');
+          } else {
+            List<Map<String, dynamic>> listTask = snapshot.data!;
+            return TaskListBuilder(removeIfComplete: false, list: listTask);
+          }
+        },
       ),
 
       floatingActionButton: FloatingActionButton.extended(

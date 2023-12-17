@@ -60,7 +60,6 @@ class DatabaseHelper {
   //Cadastrar
   Future<int> signup(Usuarios user) async {
     final Database db = await initDB();
-
     return db.insert('users', user.toMap());
   }
 
@@ -145,18 +144,79 @@ class DatabaseHelper {
     return count as int;
   }
 
-  //Lista de tarefas passando o taskboardID
-  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(
-      int taskBoardId) async {
+  // Método para obter todas as tasks concluídas associadas a um usuário e fazer JOIN com task_board
+  Future<List<Map<String, dynamic>>> getCompletedTasks(int userId) async {
     final Database db = await initDB();
 
-    List<Map<String, dynamic>> result = await db.query(
-      'task',
-      where: 'board_id = ?',
-      whereArgs: [taskBoardId],
-    );
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+    SELECT task.*, task_board.color AS color, task_board.icon AS icon
+    FROM task
+    JOIN task_board ON task.board_id = task_board.id
+    WHERE task.user_id = ? AND task.isCompleted = 1
+    ORDER BY task.date, task.startTime
+  ''', [userId]);
 
     return result;
+  }
+
+  // Método para obter tarefas não concluídas com data e fazer JOIN com task_board
+  Future<List<Map<String, dynamic>>> getPendingTasksDate(int userId, String date) async {
+    final Database db = await initDB();
+  
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT task.*, task_board.color AS color, task_board.icon AS icon
+      FROM task
+      INNER JOIN task_board ON task.board_id = task_board.id
+      WHERE task.user_id = ? AND task.isCompleted = 0 AND task.date = ?
+    ''', [userId, date]);
+
+    return result;
+  }
+
+  // Método para obter tarefas pela data e fazer JOIN com task_board
+  Future<List<Map<String, dynamic>>> getTasksDate(int userId, String date) async {
+    final Database db = await initDB();
+  
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+      SELECT task.*, task_board.color AS color, task_board.icon AS icon
+      FROM task
+      INNER JOIN task_board ON task.board_id = task_board.id
+      WHERE task.user_id = ? AND task.date = ?
+    ''', [userId, date]);
+
+    return result;
+  }
+
+  // Método para obter tarefas não concluídas com data e fazer JOIN com task_board
+  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(int taskBoardId) async {
+    final Database db = await initDB();
+  
+    List<Map<String, dynamic>> result = await db.rawQuery('''
+    SELECT task.*, task_board.color AS color, task_board.icon AS icon
+    FROM task
+    JOIN task_board ON task.board_id = task_board.id
+    WHERE task.board_id = ?
+    ORDER BY task.date, task.startTime
+  ''', [taskBoardId]);
+
+    return result;
+  }
+
+  //apagar tarefa
+  Future<void> deleteTask(int taskId) async {
+    final Database db = await initDB();
+    await db.delete('task', where: 'id = ?', whereArgs: [taskId]);
+  }
+
+  //Marcar coo conclido
+  Future<void> completeTask(int taskId) async {
+    final Database db = await initDB();
+    await db.update(
+      'task',
+      {'isCompleted': 1},
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
   }
 
 }
