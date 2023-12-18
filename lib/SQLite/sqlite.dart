@@ -99,7 +99,15 @@ class DatabaseHelper {
   }
 
   //Cadastrar Tarefa
-  Future<int> insertTask(String title, String note, int isCompleted, String startTime, String endTime, String date, int boardID, int userID) async {
+  Future<int> insertTask(
+      String title,
+      String note,
+      int isCompleted,
+      String startTime,
+      String endTime,
+      String date,
+      int boardID,
+      int userID) async {
     final Database db = await initDB();
 
     Map<String, dynamic> taskBoardData = {
@@ -160,9 +168,10 @@ class DatabaseHelper {
   }
 
   // Método para obter tarefas não concluídas com data e fazer JOIN com task_board
-  Future<List<Map<String, dynamic>>> getPendingTasksDate(int userId, String date) async {
+  Future<List<Map<String, dynamic>>> getPendingTasksDate(
+      int userId, String date) async {
     final Database db = await initDB();
-  
+
     List<Map<String, dynamic>> result = await db.rawQuery('''
       SELECT task.*, task_board.color AS color, task_board.icon AS icon
       FROM task
@@ -174,9 +183,10 @@ class DatabaseHelper {
   }
 
   // Método para obter tarefas pela data e fazer JOIN com task_board
-  Future<List<Map<String, dynamic>>> getTasksDate(int userId, String date) async {
+  Future<List<Map<String, dynamic>>> getTasksDate(
+      int userId, String date) async {
     final Database db = await initDB();
-  
+
     List<Map<String, dynamic>> result = await db.rawQuery('''
       SELECT task.*, task_board.color AS color, task_board.icon AS icon
       FROM task
@@ -188,9 +198,10 @@ class DatabaseHelper {
   }
 
   // Método para obter tarefas não concluídas com data e fazer JOIN com task_board
-  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(int taskBoardId) async {
+  Future<List<Map<String, dynamic>>> getTasksByTaskBoard(
+      int taskBoardId) async {
     final Database db = await initDB();
-  
+
     List<Map<String, dynamic>> result = await db.rawQuery('''
     SELECT task.*, task_board.color AS color, task_board.icon AS icon
     FROM task
@@ -219,4 +230,51 @@ class DatabaseHelper {
     );
   }
 
+  Future<List<Map<String, dynamic>>> getTasksByDay(
+      int userId, DateTime day) async {
+    final String day1 = day.toString().split(' ')[0];
+    final Database db = await initDB();
+    List<Map<String, dynamic>> dayTasks = await db.rawQuery('''
+      SELECT task.*, task_board.color AS color, task_board.icon AS icon
+      FROM task
+      LEFT JOIN task_board ON task.board_id = task_board.id
+      WHERE task.user_id = ? AND task.date = ?
+    ''', [userId, day1]);
+
+    return dayTasks;
+  }
+
+  Future<List<Map<String, dynamic>>> getTasksByMonth(
+      int userId, List<DateTime> monthDays) async {
+    List<String> days = monthDays.map((DateTime day) {
+      return day.toString().split(' ')[0];
+    }).toList();
+    String inClause = '(' + List.filled(days.length, '?').join(', ') + ')';
+
+    final Database db = await initDB();
+    List<Map<String, dynamic>> dayTasks = await db.query(
+      'task t left join task_board tb on t.board_id = tb.id',
+      columns: ["date"],
+      where: 't.user_id = ? AND t.date IN $inClause',
+      whereArgs: [userId, ...days],
+    );
+
+    return dayTasks;
+  }
+
+  Future<List<Map<String, dynamic>>> getTasksBySearch(
+      int userId, String palavra) async {
+    final Database db = await initDB();
+    palavra = "%$palavra%".toLowerCase();
+    List<Map<String, dynamic>> dayTasks = await db.rawQuery('''
+      SELECT task.*, task_board.color AS color, task_board.icon AS icon
+      FROM task
+      LEFT JOIN task_board ON task.board_id = task_board.id
+      WHERE task.user_id = ? AND (
+      lower(task.title) LIKE ? 
+      OR lower(task.note) LIKE ?
+    )
+    ''', [userId, palavra, palavra]);
+    return dayTasks;
+  }
 }

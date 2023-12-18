@@ -10,14 +10,14 @@ class TaskExpander extends StatefulWidget {
   final Function(int index) onDelete;
   final Function(int index) onEdit;
   final Function(int index) onCompleted;
-  final int id; 
+  final int id;
   final String title;
-  final String note; 
-  final DateTime date; 
-  final String startTime; 
-  final String endTime; 
-  final int isCompleted; 
-  final int color; 
+  final String note;
+  final DateTime date;
+  final String startTime;
+  final String endTime;
+  final int isCompleted;
+  final int color;
   final int icon;
   final int indexListTask;
 
@@ -38,7 +38,7 @@ class TaskExpander extends StatefulWidget {
     required this.icon,
     required this.indexListTask,
   }) : super(key: key);
-  
+
   @override
   State<TaskExpander> createState() => _TaskExpanderState();
 }
@@ -49,12 +49,11 @@ class _TaskExpanderState extends State<TaskExpander> {
   final db = DatabaseHelper();
 
   @override
-  initState(){
+  initState() {
     super.initState();
     color1 = colorsList[widget.color];
     color2 = modifyColor(colorsList[widget.color], -120);
   }
-
 
   List<Color> colorsList = [
     Color(0xFFD7423D),
@@ -90,8 +89,7 @@ class _TaskExpanderState extends State<TaskExpander> {
     if (widget.expand) {
       return Container(
         decoration: BoxDecoration(
-            color: color1,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
+            color: color1, borderRadius: BorderRadius.all(Radius.circular(20))),
         margin: EdgeInsets.symmetric(vertical: 6),
         //height: 100,
         child: Container(
@@ -109,261 +107,294 @@ class _TaskExpanderState extends State<TaskExpander> {
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
                           color: color2,
-                        )
-                        ),
+                        )),
                     Row(
                       children: [
-                      //Data da tarefa
-                      Container(
-                        margin: EdgeInsets.only(right: 15),
-                        child: Row(
-                          children: [
-                            //Dia
-                            Text('${DateFormat.E().format(widget.date)} ${widget.date.day}/${widget.date.month}',
+                        //Data da tarefa
+                        Container(
+                          margin: EdgeInsets.only(right: 15),
+                          child: Row(
+                            children: [
+                              //Dia
+                              Text(
+                                '${DateFormat.E().format(widget.date)} ${widget.date.day}/${widget.date.month}',
                                 style: TextStyle(
-                                  color: color2,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold
-                                ),),
-                            Divider(indent: 4,),
-                            Icon(Icons.alarm,
-                            color: color2,
-                            size: 13),
-                            Divider(indent: 2,),
-                            //hora
-                            Text(widget.startTime,
+                                    color: color2,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              Divider(
+                                indent: 4,
+                              ),
+                              Icon(Icons.alarm, color: color2, size: 13),
+                              Divider(
+                                indent: 2,
+                              ),
+                              //hora
+                              Text(
+                                widget.startTime,
                                 style: TextStyle(
-                                  color: color2,
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold
-                                ),),
-
-                          ],
+                                    color: color2,
+                                    fontSize: 13,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      widget.isCompleted == 0 ?
-                      Row(children: [
-                        //isComplete
-                        Icon(Icons.hourglass_empty_rounded,
-                        size: 13,
-                        color: color2,),
-                        Divider(indent: 2,),
-                        Text("Pendente",
-                        style: TextStyle(
-                              color: color2,
-                              fontSize: 13
-                            ),)
-                      ],) : 
-                      Row(children: [
-                        //isComplete
-                        Icon(Icons.task_alt,
-                        size: 15,
-                        color: color2,),
-                        Divider(indent: 2,),
-                        Text("Concluído",
-                        style: TextStyle(
-                              color: color2,
-                              fontSize: 13
-                            ),)
-                      ],)
-                    ],)
+                        widget.isCompleted == 0
+                            ? Row(
+                                children: [
+                                  //isComplete
+                                  Icon(
+                                    Icons.hourglass_empty_rounded,
+                                    size: 13,
+                                    color: color2,
+                                  ),
+                                  Divider(
+                                    indent: 2,
+                                  ),
+                                  Text(
+                                    "Pendente",
+                                    style:
+                                        TextStyle(color: color2, fontSize: 13),
+                                  )
+                                ],
+                              )
+                            : Row(
+                                children: [
+                                  //isComplete
+                                  Icon(
+                                    Icons.task_alt,
+                                    size: 15,
+                                    color: color2,
+                                  ),
+                                  Divider(
+                                    indent: 2,
+                                  ),
+                                  Text(
+                                    "Concluído",
+                                    style:
+                                        TextStyle(color: color2, fontSize: 13),
+                                  )
+                                ],
+                              )
+                      ],
+                    )
                   ],
                 ),
                 //Icone
-                Icon(IconLabel.values[widget.icon].icon,
-                size: 55,
-                color: color2.withOpacity(0.4),),
+                Icon(
+                  IconLabel.values[widget.icon].icon,
+                  size: 55,
+                  color: color2.withOpacity(0.4),
+                ),
               ],
-        )),
+            )),
       );
 
-    //EXPANDIDO
+      //EXPANDIDO
     } else {
       return Container(
-        decoration: BoxDecoration(
-            color: color1,
-            borderRadius: BorderRadius.all(Radius.circular(20))),
-        margin: EdgeInsets.symmetric(vertical: 6),
-        //height: 320,
-        child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-            Container(
-              padding: EdgeInsets.fromLTRB(15,15,15,2),
-              child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //Icone title pendente
-                children: [
-                  Row(
-                    children: [
-                        Icon(IconLabel.values[widget.icon].icon,
-                  color:color2,
-                  size: 34,),
-                  Divider(indent: 6,),
-                  Text(widget.title,
-                        style: TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.bold,
+          decoration: BoxDecoration(
+              color: color1,
+              borderRadius: BorderRadius.all(Radius.circular(20))),
+          margin: EdgeInsets.symmetric(vertical: 6),
+          //height: 320,
+          child: Container(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Container(
+                padding: EdgeInsets.fromLTRB(15, 15, 15, 2),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //Icone title pendente
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          IconLabel.values[widget.icon].icon,
                           color: color2,
-                        )
-                  )
-                    ],
-                  )
-                  ,
-                  widget.isCompleted == 0 ?
-                  Column(
-                    children: [
-                      Icon(Icons.hourglass_empty_rounded,
-                      color: color2,
-                      size: 18
-                      ),
-                      Text("Pendente", style: TextStyle(color: color2, fontSize: 10, fontWeight: FontWeight.w600))
-                    ],
-                  ) :
-                  Column(
-                    children: [
-                      Icon(Icons.task_alt,
-                      color: color2,
-                      size: 18
-                      ),
-                      Text("Concluído", style: TextStyle(color: color2, fontSize: 10, fontWeight: FontWeight.w600))
-                    ],
-                  )
-                ],
-              ),
-            ),
-            Container(
-              padding: EdgeInsets.only(left: 15),
-              child: Row(
-                children: [
-                  Text('${DateFormat.E().format(widget.date)} ${widget.date.day}/${widget.date.month}',
-                      style: TextStyle(
-                        color: color2,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold
-                      ),),
-                  Divider(indent: 4,),
-                  Icon(Icons.alarm,
-                  color: color2,
-                  size: 13),
-                  Divider(indent: 2,),
-                  Text(widget.startTime,
-                      style: TextStyle(
-                        color: color2,
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold
-                      ),),
-
-                ],
-              ),
-            ),
-            //Anotation
-            Container(
-              margin: EdgeInsets.fromLTRB(15,6,15,0),
-              padding: EdgeInsets.all(9),
-              //height: 180,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
-                color: Colors.white38
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("ANOTAÇÃO", style: TextStyle(
-                    color: color2,
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold
-                  ),),
-                  Divider(
-                    height:5,
-                    thickness: 1,
-                    endIndent: 200,
-                    color: color2.withOpacity(0.3),
-                  ),
-                  Text(widget.note, style: TextStyle(color: color2.withOpacity(.8)),)
-              ]),
-            ),
-            //Botoes
-            Container(
-              margin: EdgeInsets.all(3),
-              padding: EdgeInsets.fromLTRB(15,6,15,6),
-              child: Row(
-                children: [
-                  //Botao apagar
-                  ElevatedButton(
-                  onPressed: (){
-                      //Confirmar apagar
-                      showDialog(context: context,
-                        builder: (context){
-                          return AlertDialog(
-                            title: Text('Apagar'),
-                            content: Text('Deseja apagar?'),
-                            actions: [
-                              TextButton(
-                                onPressed: (){
-                                  Navigator.pop(context);
-                                }
-                              , child: Text('cancelar')),
-                              TextButton(
-                                onPressed: (){
-                                  db.deleteTask(widget.id);
-                                  widget.onDelete(widget.indexListTask);
-                                  print('APAGAR');
-                                  Navigator.pop(context);
-                                }
-                              , child: Text('sim')),
+                          size: 34,
+                        ),
+                        Divider(
+                          indent: 6,
+                        ),
+                        Text(widget.title,
+                            style: TextStyle(
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                              color: color2,
+                            ))
+                      ],
+                    ),
+                    widget.isCompleted == 0
+                        ? Column(
+                            children: [
+                              Icon(Icons.hourglass_empty_rounded,
+                                  color: color2, size: 18),
+                              Text("Pendente",
+                                  style: TextStyle(
+                                      color: color2,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600))
                             ],
-                          );
-                        }
-                        );
-                  },
-                  child: Text("Apagar"),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: color1,
-                    backgroundColor: color2
-                  ),
-                  ),
-                  Divider(indent: 6,),
-                  //Editar
-                  ElevatedButton(
-                  onPressed: (){
-                      //Apagar do banco de dados
-                      showDialog(context: context, builder: (context){
-                        return Padding(
-                          padding: const EdgeInsets.all(40),
-                          child: NewTask(nameBoard: 'Teste', color: 2, taskBoardID: 2),
-                        );
-                      });
-                      print('Editar');
-                  },
-                  child: Text("Editar"),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: color1,
-                    backgroundColor: color2
-                  ),
-                  ),
-                  Divider(indent: 6,),
-                  //Concluido
-                  widget.isCompleted == 0 ? ElevatedButton(
-                  onPressed: (){
-                    //isComplete do banco de dados
-                    widget.onCompleted(widget.indexListTask);
-                    db.completeTask(widget.id);
-                    print('Complete');
-                  },
-                  child: Text("Concluído"),
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: color1,
-                    backgroundColor: color2
-                  ),
-                  ) : Container(),
-                ], 
+                          )
+                        : Column(
+                            children: [
+                              Icon(Icons.task_alt, color: color2, size: 18),
+                              Text("Concluído",
+                                  style: TextStyle(
+                                      color: color2,
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600))
+                            ],
+                          )
+                  ],
+                ),
               ),
-            )
-          ]),
-        )
-      );
+              Container(
+                padding: EdgeInsets.only(left: 15),
+                child: Row(
+                  children: [
+                    Text(
+                      '${DateFormat.E().format(widget.date)} ${widget.date.day}/${widget.date.month}',
+                      style: TextStyle(
+                          color: color2,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Divider(
+                      indent: 4,
+                    ),
+                    Icon(Icons.alarm, color: color2, size: 13),
+                    Divider(
+                      indent: 2,
+                    ),
+                    Text(
+                      widget.startTime,
+                      style: TextStyle(
+                          color: color2,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              //Anotation
+              Container(
+                margin: EdgeInsets.fromLTRB(15, 6, 15, 0),
+                padding: EdgeInsets.all(9),
+                //height: 180,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
+                    color: Colors.white38),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ANOTAÇÃO",
+                        style: TextStyle(
+                            color: color2,
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      Divider(
+                        height: 5,
+                        thickness: 1,
+                        endIndent: 200,
+                        color: color2.withOpacity(0.3),
+                      ),
+                      Text(
+                        widget.note,
+                        style: TextStyle(color: color2.withOpacity(.8)),
+                      )
+                    ]),
+              ),
+              //Botoes
+              Container(
+                margin: EdgeInsets.all(3),
+                padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                child: Row(
+                  children: [
+                    //Botao apagar
+                    ElevatedButton(
+                      onPressed: () {
+                        //Confirmar apagar
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                title: Text('Apagar'),
+                                content: Text('Deseja apagar?'),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('cancelar')),
+                                  TextButton(
+                                      onPressed: () {
+                                        db.deleteTask(widget.id);
+                                        widget.onDelete(widget.indexListTask);
+                                        print('APAGAR');
+                                        Navigator.pop(context);
+                                      },
+                                      child: Text('sim')),
+                                ],
+                              );
+                            });
+                      },
+                      child: Text("Apagar"),
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: color1, backgroundColor: color2),
+                    ),
+                    Divider(
+                      indent: 6,
+                    ),
+                    //Editar
+                    ElevatedButton(
+                      onPressed: () {
+                        //Apagar do banco de dados
+                        showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Padding(
+                                padding: const EdgeInsets.all(40),
+                                child: NewTask(
+                                    nameBoard: 'Teste',
+                                    color: 2,
+                                    taskBoardID: 2),
+                              );
+                            });
+                        print('Editar');
+                      },
+                      child: Text("Editar"),
+                      style: ElevatedButton.styleFrom(
+                          foregroundColor: color1, backgroundColor: color2),
+                    ),
+                    Divider(
+                      indent: 6,
+                    ),
+                    //Concluido
+                    widget.isCompleted == 0
+                        ? ElevatedButton(
+                            onPressed: () {
+                              //isComplete do banco de dados
+                              widget.onCompleted(widget.indexListTask);
+                              db.completeTask(widget.id);
+                              print('Complete');
+                            },
+                            child: Text("Concluído"),
+                            style: ElevatedButton.styleFrom(
+                                foregroundColor: color1,
+                                backgroundColor: color2),
+                          )
+                        : Container(),
+                  ],
+                ),
+              )
+            ]),
+          ));
     }
   }
 }
