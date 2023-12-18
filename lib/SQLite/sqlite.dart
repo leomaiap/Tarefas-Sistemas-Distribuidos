@@ -98,6 +98,23 @@ class DatabaseHelper {
     return id;
   }
 
+   Future<int> insertTaskBoardID(
+      int idd, String name, int color, int icon, int userID) async {
+    final Database db = await initDB();
+
+    Map<String, dynamic> taskBoardData = {
+      'id': idd,
+      'name': name,
+      'color': color,
+      'icon': icon,
+      'user_id': userID,
+    };
+
+    int id = await db.insert('task_board', taskBoardData);
+
+    return id;
+  }
+
   //Cadastrar Tarefa
   Future<int> insertTask(
       String title,
@@ -230,33 +247,6 @@ class DatabaseHelper {
     );
   }
 
-  Future<void> updateTask
-      (int taskId,
-      String title,
-      String note,
-      String startTime,
-      String endTime,
-      String date) async{
-
-      //print("TASK ID:");
-      //print(taskId);
-      //print(note);
-
-      final Database db = await initDB();
-      await db.update(
-        'task',
-        {
-          'title': title,
-          'note': note,
-          'startTime': startTime,
-          'endTime': endTime,
-          'date': date,
-        },
-        where: 'id = ?',
-        whereArgs: [taskId],
-      );
-  }
-
   Future<List<Map<String, dynamic>>> getTasksByDay(
       int userId, DateTime day) async {
     final String day1 = day.toString().split(' ')[0];
@@ -321,6 +311,54 @@ class DatabaseHelper {
     return {'completedTasks': completedTasks, 'totalTasks': totalTasks};
   }
 
+  Future<List<bool>> hasTasksInNext5Days(int userId, String currentDate) async {
+    final Database db = await initDB();
+    List<bool> result = [];
+
+    for (int i = 0; i < 5; i++) {
+      DateTime nextDay = DateTime.parse(currentDate).add(Duration(days: i));
+      String nextDayFormatted = nextDay.toString().split(' ')[0];
+
+      List<Map<String, dynamic>> dayTasks = await db.rawQuery('''
+        SELECT COUNT(*) as count
+        FROM task
+        WHERE user_id = ? AND date = ? AND isCompleted = 0
+      ''', [userId, nextDayFormatted]);
+
+      int taskCount = dayTasks.isNotEmpty ? dayTasks[0]['count'] : 0;
+      result.add(taskCount > 0);
+    }
+
+    return result;
+  }
+
+  Future<void> updateTask
+      (int taskId,
+      String title,
+      String note,
+      String startTime,
+      String endTime,
+      String date) async{
+
+      //print("TASK ID:");
+      //print(taskId);
+      //print(note);
+
+      final Database db = await initDB();
+      await db.update(
+        'task',
+        {
+          'title': title,
+          'note': note,
+          'startTime': startTime,
+          'endTime': endTime,
+          'date': date,
+        },
+        where: 'id = ?',
+        whereArgs: [taskId],
+      );
+  }
+
   Future<List<Map<String, dynamic?>>> getTaskDataById(int taskId) async{
     final Database db = await initDB();
       List<Map<String, dynamic>> taskData = await db.rawQuery('''
@@ -330,4 +368,5 @@ class DatabaseHelper {
     ''');
     return taskData;
   }
+
 }
