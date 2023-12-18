@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:planner/Autenticador/login.dart';
 import 'package:planner/SQLite/sqlite.dart';
@@ -61,7 +60,6 @@ class _PesquisaState extends State<Pesquisa> {
           auxDay.millisecond,
           auxDay.microsecond)] = [auxDay];
     }
-    print(finalDays);
 
     return finalDays;
   }
@@ -188,9 +186,6 @@ class _PesquisaState extends State<Pesquisa> {
                     setState(() {});
                   },
                   eventLoader: (DateTime day) {
-                    print(day);
-                    print(_currentMonth);
-                    print(_currentMonth.value[day]);
                     return _currentMonth.value[day] ?? [];
                   },
                 ),
