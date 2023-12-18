@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/newTask.dart';
+import 'package:planner/Views/updateTask.dart';
 import 'package:planner/Widgets/taskboardWidget.dart';
 
 class TaskExpander extends StatefulWidget {
@@ -11,11 +12,11 @@ class TaskExpander extends StatefulWidget {
   final Function(int index) onEdit;
   final Function(int index) onCompleted;
   final int id;
-  final String title;
-  final String note;
-  final DateTime date;
-  final String startTime;
-  final String endTime;
+  String title;
+  String note;
+  DateTime date;
+  String startTime;
+  String endTime;
   final int isCompleted;
   final int color;
   final int icon;
@@ -70,6 +71,45 @@ class _TaskExpanderState extends State<TaskExpander> {
     Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
+
+  void editWidget() async{
+    //botão edit task chama essa função
+
+    //Esta função chama (usando push, não push named) o código para atualizar uma tarefa
+    //como não é o push named, o código do updateTask usa o 'Navigator.pop' para voltar para esta página
+    //com o contexto que ela estava no momento em que o botão foi apertado
+    await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => UpdateTask(
+        taskId: widget.id,
+        color: widget.color,
+        endTime: widget.endTime,
+        date: toUpdateFormat(widget.date),
+        startTime: widget.startTime,
+        nome: widget.title,
+        note: widget.note
+    )));
+
+    //depois, carrega denova os dados do banco de dados
+      List<Map<String, dynamic>> rawQuery = await db.getTaskDataById(widget.id);
+      Map<String,dynamic> updatedData = rawQuery[0];
+      widget.title = updatedData['name'];
+      widget.note = updatedData['note'];
+      widget.endTime = updatedData['endTime'];
+      widget.startTime = updatedData['startTime'];
+      String date =  updatedData['date'];
+      int year = int.parse(date.split('-')[0]);
+      int month = int.parse(date.split('-')[1]);
+      int day = int.parse(date.split('-')[2]);
+      DateTime dt = DateTime(year,month,day);
+      widget.date = dt;
+      setState(() {});
+  }
+
+  String toUpdateFormat(DateTime dt){ //função converte de volta do dateTime para o formato que a classe updateTask usa
+    //print('DT');
+    //print(dt);
+    return dt.toString().split(' ')[0];
+  }
 
   //Mudar o tom da cor
   Color modifyColor(Color originalColor, int brightness) {
@@ -355,9 +395,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                     ),
                     //EDITAR
                     MaterialButton(
-                      onPressed: () {
-                        
-                      },
+                      onPressed: editWidget,
                       minWidth: MediaQuery.of(context).size.width / 5,
                       child: Text("Editar", style: TextStyle(fontSize: 12),),
                       color: color2,

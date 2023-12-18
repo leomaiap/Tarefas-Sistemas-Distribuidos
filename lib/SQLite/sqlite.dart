@@ -230,6 +230,33 @@ class DatabaseHelper {
     );
   }
 
+  Future<void> updateTask
+      (int taskId,
+      String title,
+      String note,
+      String startTime,
+      String endTime,
+      String date) async{
+
+      //print("TASK ID:");
+      //print(taskId);
+      //print(note);
+
+      final Database db = await initDB();
+      await db.update(
+        'task',
+        {
+          'title': title,
+          'note': note,
+          'startTime': startTime,
+          'endTime': endTime,
+          'date': date,
+        },
+        where: 'id = ?',
+        whereArgs: [taskId],
+      );
+  }
+
   Future<List<Map<String, dynamic>>> getTasksByDay(
       int userId, DateTime day) async {
     final String day1 = day.toString().split(' ')[0];
@@ -294,4 +321,13 @@ class DatabaseHelper {
     return {'completedTasks': completedTasks, 'totalTasks': totalTasks};
   }
 
+  Future<List<Map<String, dynamic?>>> getTaskDataById(int taskId) async{
+    final Database db = await initDB();
+      List<Map<String, dynamic>> taskData = await db.rawQuery('''
+      SELECT title AS name, startTime, endTime, note, date
+      FROM task
+      WHERE id = $taskId
+    ''');
+    return taskData;
+  }
 }
