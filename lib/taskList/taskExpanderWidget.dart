@@ -313,11 +313,11 @@ class _TaskExpanderState extends State<TaskExpander> {
               //Botoes
               Container(
                 margin: EdgeInsets.all(3),
-                padding: EdgeInsets.fromLTRB(15, 6, 15, 6),
+                padding: EdgeInsets.fromLTRB(15, 6, 0, 6),
                 child: Row(
                   children: [
-                    //Botao apagar
-                    ElevatedButton(
+                    // Botão Apagar
+                    MaterialButton(
                       onPressed: () {
                         //Confirmar apagar
                         showDialog(
@@ -344,52 +344,43 @@ class _TaskExpanderState extends State<TaskExpander> {
                               );
                             });
                       },
-                      child: Text("Apagar"),
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: color1, backgroundColor: color2),
+                      minWidth: MediaQuery.of(context).size.width / 5,
+                      child: Text("Apagar", style: TextStyle(fontSize: 12),),
+                      color: color2,
+                      textColor: color1,
                     ),
+                    
                     Divider(
                       indent: 6,
                     ),
-                    //Editar
-                    ElevatedButton(
+                    //EDITAR
+                    MaterialButton(
                       onPressed: () {
-                        //Apagar do banco de dados
-                        showDialog(
-                            context: context,
-                            builder: (context) {
-                              return Padding(
-                                padding: const EdgeInsets.all(40),
-                                child: NewTask(
-                                    nameBoard: 'Teste',
-                                    color: 2,
-                                    taskBoardID: 2),
-                              );
-                            });
-                        print('Editar');
+                        
                       },
-                      child: Text("Editar"),
-                      style: ElevatedButton.styleFrom(
-                          foregroundColor: color1, backgroundColor: color2),
+                      minWidth: MediaQuery.of(context).size.width / 5,
+                      child: Text("Editar", style: TextStyle(fontSize: 12),),
+                      color: color2,
+                      textColor: color1,
                     ),
+                    
                     Divider(
                       indent: 6,
                     ),
                     //Concluido
                     widget.isCompleted == 0
-                        ? ElevatedButton(
-                            onPressed: () {
-                              //isComplete do banco de dados
-                              widget.onCompleted(widget.indexListTask);
-                              db.completeTask(widget.id);
-                              print('Complete');
-                            },
-                            child: Text("Concluído"),
-                            style: ElevatedButton.styleFrom(
-                                foregroundColor: color1,
-                                backgroundColor: color2),
-                          )
-                        : Container(),
+                        ? MaterialButton(
+                      onPressed: () {
+                        //isComplete do banco de dados
+                        widget.onCompleted(widget.indexListTask);
+                        db.completeTask(widget.id);
+                        print('Complete');
+                      },
+                      minWidth: MediaQuery.of(context).size.width / 5,
+                      child: Text("Concluído", style: TextStyle(fontSize: 12),),
+                      color: color2,
+                      textColor: color1,
+                    ) : Container(),
                   ],
                 ),
               )
