@@ -50,9 +50,16 @@ class _PesquisaState extends State<Pesquisa> {
 
     Map<DateTime, List<dynamic>> finalDays = {};
     for (Map<String, dynamic> day in daysWithTasks) {
-      finalDays[(DateTime.parse(day["date"]).toUtc())] = [
-        (DateTime.parse(day["date"]))
-      ];
+      DateTime auxDay = DateTime.parse(day["date"]);
+      finalDays[DateTime.utc(
+          auxDay.year,
+          auxDay.month,
+          auxDay.day,
+          auxDay.hour,
+          auxDay.minute,
+          auxDay.second,
+          auxDay.millisecond,
+          auxDay.microsecond)] = [auxDay];
     }
     print(finalDays);
 
@@ -64,7 +71,12 @@ class _PesquisaState extends State<Pesquisa> {
     Future.delayed(Duration.zero, () async {
       _currentMonth = ValueNotifier(
           await getTaskDaysOfMonth(_focusedDay.year, _focusedDay.month));
-      setState(() {});
+      List<Map<String, dynamic>> tasks = await futureSelectedTasks;
+      setState(() {
+        if (tasks.isNotEmpty) {
+          _calendarFormat = CalendarFormat.twoWeeks;
+        }
+      });
     });
 
     futureSelectedTasks = db.getTasksByDay(_userId, _selectedDay);
@@ -176,6 +188,9 @@ class _PesquisaState extends State<Pesquisa> {
                     setState(() {});
                   },
                   eventLoader: (DateTime day) {
+                    print(day);
+                    print(_currentMonth);
+                    print(_currentMonth.value[day]);
                     return _currentMonth.value[day] ?? [];
                   },
                 ),
