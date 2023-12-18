@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:planner/Widgets/emptyTask.dart';
 import 'package:planner/taskList/taskExpanderWidget.dart';
 
 class TaskListBuilder extends StatefulWidget {
@@ -57,7 +58,12 @@ class _TaskListBuilderState extends State<TaskListBuilder> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15,20,15,15),
-      child: ListView.builder(
+      child: listTask.isEmpty
+                ? Center(
+                    child: EmptyList()
+                  )
+                :  
+        ListView.builder(
         itemCount: listTask.length, //list.lenth
         itemBuilder: (context, index) {
           if (ignoreIndex.contains(index)) {
