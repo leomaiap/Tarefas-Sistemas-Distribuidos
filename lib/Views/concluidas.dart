@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:planner/Autenticador/login.dart';
 import 'package:planner/SQLite/sqlite.dart';
+import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
 import 'package:planner/userSession.dart';
 
@@ -17,6 +18,9 @@ class _ConcluidasState extends State<Concluidas> {
   List<Map<String, dynamic>> listTask = [];
   late Future<List<Map<String, dynamic>>> futureTaskList;
 
+  int completedTasks = 0;
+  int totalTasks = 0;
+
   @override
   void initState() {
     super.initState();
@@ -24,6 +28,9 @@ class _ConcluidasState extends State<Concluidas> {
   }
 
   Future<List<Map<String, dynamic>>> _getTaskList() async {
+    Map<String, int> progress = await db.getTaskProgress(UserSession.getID());
+    completedTasks = progress['completedTasks'] ?? 0;
+    totalTasks = progress['totalTasks'] ?? 0;
     List<Map<String, dynamic>> list =
         await db.getCompletedTasks(UserSession.getID());
     return list;
@@ -35,19 +42,10 @@ class _ConcluidasState extends State<Concluidas> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Tarefas concluídas", style: TextStyle(
-          fontWeight: FontWeight.bold
+        title: Text(
+          'Tarefas Concluídas',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const TelaLogin()));
-            },
-          ),
-        ],
         centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
@@ -59,7 +57,15 @@ class _ConcluidasState extends State<Concluidas> {
             return Text('Erro: ${snapshot.error}');
           } else {
             List<Map<String, dynamic>> listTask = snapshot.data!;
-            return TaskListBuilder(removeIfComplete: false, list: listTask);
+            return Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 15),
+                  child: TaskProgressIndicator(completedTasks: completedTasks, totalTasks: totalTasks),
+                ),
+                Expanded(child: TaskListBuilder(removeIfComplete: false, list: listTask)),
+              ],
+            );
           }
         },
       ),
