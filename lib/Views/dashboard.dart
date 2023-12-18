@@ -6,6 +6,7 @@ import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/newTaskBoard.dart';
 import 'package:planner/Views/openTaskBoard.dart';
 import 'package:planner/Widgets/emptyTask.dart';
+import 'package:planner/Widgets/emptyDashboard.dart';
 import 'package:planner/userSession.dart';
 import 'package:planner/widgets/taskboardWidget.dart';
 
@@ -143,7 +144,7 @@ class _DashboardState extends State<Dashboard> {
 
                     }
                   },
-                  child: EmptyList(),
+                  child: EmptyDashboard(),
                   ));
                 } else {
                   return Container(
