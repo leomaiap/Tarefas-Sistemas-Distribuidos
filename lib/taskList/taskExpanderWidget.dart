@@ -104,7 +104,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                     //Titulo da Tarefa
                     Text(widget.title,
                         style: TextStyle(
-                          fontSize: 22,
+                          fontSize: widget.title.length > 20 ? 14 : 19,
                           fontWeight: FontWeight.bold,
                           color: color2,
                         )),
@@ -221,7 +221,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                         ),
                         Text(widget.title,
                             style: TextStyle(
-                              fontSize: 22,
+                              fontSize: widget.title.length > 20 ? 14 : 20,
                               fontWeight: FontWeight.bold,
                               color: color2,
                             ))

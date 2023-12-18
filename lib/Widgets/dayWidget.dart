@@ -4,7 +4,8 @@ import 'package:intl/intl.dart';
 class DayCard extends StatelessWidget {
   DateTime day;
   bool isSelected;
-  DayCard({super.key, required this.day, required this.isSelected});
+  bool hasTask;
+  DayCard({super.key, required this.day, required this.isSelected, required this.hasTask});
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class DayCard extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 color: Colors.white
               ),),
+              Icon(Icons.circle, size: 7, color: hasTask ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent),
               Text("${DateFormat.E().format(day)}", style: TextStyle(
                 fontSize: screenWidth*0.03,
                 color: Colors.white))
@@ -55,6 +57,7 @@ class DayCard extends StatelessWidget {
               fontWeight: FontWeight.bold,
               
             ),),
+            Icon(Icons.circle, size: 7, color: hasTask ? Theme.of(context).colorScheme.primary : Colors.transparent),
             Text("${DateFormat.E().format(day)}")
           ],
         )

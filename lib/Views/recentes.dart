@@ -18,12 +18,15 @@ class _RecentesState extends State<Recentes> {
   int daySelected = 0;
   final db = DatabaseHelper();
   List<Map<String, dynamic>> listTask = [];
+  List<bool> dayHasTask = [];
   late Future<List<Map<String, dynamic>>> futureTaskList;
+  late Future<List<bool>> futureHasTask;
 
   @override
   void initState() {
     super.initState();
     futureTaskList = _getTaskList();
+    futureHasTask = _getHasTask();
     setState(() {
       today = DateTime.now();
     });
@@ -31,6 +34,12 @@ class _RecentesState extends State<Recentes> {
 
   bool isSelected(int index) {
     return daySelected == index;
+  }
+
+  Future<List<bool>> _getHasTask() async {
+    String data = DateTime.now().toString().split(' ')[0];
+    List<bool> result = await db.hasTasksInNext5Days(UserSession.getID(), data);
+    return result;
   }
 
   Future<List<Map<String, dynamic>>> _getTaskList() async {
@@ -46,55 +55,60 @@ class _RecentesState extends State<Recentes> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text("Tarefas Recentes", style: TextStyle(
-          fontWeight: FontWeight.bold
+        title: Text(
+          'Tarefas Recentes',
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => const TelaLogin()));
-            },
-          ),
-        ],
         centerTitle: true,
       ),
       body: Container(
         child: Column(
           children: [
-            Container(
-              height: 100,
-              padding: EdgeInsets.all(12),
-              child: GridView.builder(
-                itemCount: 5,
-              gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                crossAxisSpacing: 0,
+            FutureBuilder<List<bool>>(
+                future: futureHasTask,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    print('wait');
+                    return Container();
+                  } else if (snapshot.hasError) {
+                    return Text('Erro: ${snapshot.error}');
+                  } else {
+                    List<bool> dayHasTask = snapshot.data!;
+                    return Container(
+                      height: 110,
+                      padding: EdgeInsets.all(12),
+                      child: GridView.builder(
+                        itemCount: 5,
+                      gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        crossAxisSpacing: 0,
+                      ),
+                      itemBuilder:(context, index) {
+                        if(daySelected == index){
+                          //futureTaskList = _getTaskList();
+                        }
+                        return GestureDetector(
+                          onTap: () {
+                            daySelected = index;
+                            print(daySelected);
+                            futureTaskList = _getTaskList();
+                            setState(() {
+                              
+                            });
+                          },
+                          child: Container(
+                            child: DayCard(
+                              day: today.add(Duration(days: index)), 
+                              isSelected: isSelected(index),
+                              hasTask: dayHasTask[index],),
+                          ),
+                        );
+                      },
+                      ),
+                    );
+                  }
+                },
               ),
-              itemBuilder:(context, index) {
-                if(daySelected == index){
-                  //futureTaskList = _getTaskList();
-                }
-                return GestureDetector(
-                  onTap: () {
-                    daySelected = index;
-                    print(daySelected);
-                    futureTaskList = _getTaskList();
-                    setState(() {
-                      
-                    });
-                  },
-                  child: Container(
-                    child: DayCard(
-                      day: today.add(Duration(days: index)), 
-                      isSelected: isSelected(index)),
-                  ),
-                );
-              },
-              ),
-            ),
             //Lista de tarefas aqui
             Expanded(
               child: FutureBuilder<List<Map<String, dynamic>>>(
