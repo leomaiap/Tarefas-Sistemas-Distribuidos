@@ -277,4 +277,21 @@ class DatabaseHelper {
     ''', [userId, palavra, palavra]);
     return dayTasks;
   }
+
+  Future<Map<String, int>> getTaskProgress(int userId) async {
+    final Database db = await initDB();
+
+    int completedTasks = Sqflite.firstIntValue(await db.rawQuery('''
+      SELECT COUNT(*) FROM task
+      WHERE user_id = ? AND isCompleted = 1
+    ''', [userId])) ?? 0;
+
+    int totalTasks = Sqflite.firstIntValue(await db.rawQuery('''
+      SELECT COUNT(*) FROM task
+      WHERE user_id = ?
+    ''', [userId])) ?? 0;
+
+    return {'completedTasks': completedTasks, 'totalTasks': totalTasks};
+  }
+
 }
