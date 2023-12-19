@@ -4,6 +4,7 @@ import 'package:planner/JsonModels/usuarios.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/userSession.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -26,8 +27,14 @@ class _TelaLoginState extends State<TelaLogin> {
       var userId = await db.getIdByName(usuario.text);
       print(userId);
       UserSession.setID(userId!);
-      //Se o login tiver correto, vai p o dashboard
+      // Salva o estado do usuário como logado
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      prefs.setInt('userId', userId);
+      
+      print("LOGIN SALVO");
       if (!mounted) return;
+      //Se o login tiver correto, vai p o dashboard
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => MainPage()));
     } else {

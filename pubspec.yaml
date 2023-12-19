@@ -42,6 +42,7 @@ dependencies:
   flutter_native_splash: ^2.3.7
   flutter_localizations:
     sdk: flutter
+  shared_preferences: ^2.2.2
 
 
 flutter_native_splash: 

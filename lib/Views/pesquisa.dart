@@ -125,15 +125,15 @@ class _PesquisaState extends State<Pesquisa> {
                 });
               },
             ),
-            if (!_isSearching)
-              IconButton(
-                  icon: const Icon(Icons.logout),
-                  onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const TelaLogin()));
-                  })
+            // if (!_isSearching)
+            //   IconButton(
+            //       icon: const Icon(Icons.logout),
+            //       onPressed: () {
+            //         Navigator.pushReplacement(
+            //             context,
+            //             MaterialPageRoute(
+            //                 builder: (context) => const TelaLogin()));
+            //       })
           ],
           centerTitle: true,
         ),

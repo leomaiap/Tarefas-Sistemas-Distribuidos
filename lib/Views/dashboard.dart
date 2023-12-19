@@ -10,6 +10,7 @@ import 'package:planner/Widgets/emptyTask.dart';
 import 'package:planner/Widgets/emptyDashboard.dart';
 import 'package:planner/userSession.dart';
 import 'package:planner/widgets/taskboardWidget.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -39,6 +40,15 @@ class _DashboardState extends State<Dashboard> {
     taskBoardsFuture = db.getTaskBoardsByUserId(UserSession.getID());
   }
 
+  void logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isLoggedIn', false);
+    prefs.remove('userId');
+
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => const TelaLogin()));
+  }
+
   // _getTaskBoardDB() async {
   //   List<Map<String, dynamic>> list =
   //       await db.getTaskBoardsByUserId(UserSession.getID());
@@ -53,7 +63,7 @@ class _DashboardState extends State<Dashboard> {
     Widget? leadingWidget;
     if (_isLongPressed) {
       leadingWidget = IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new),
+        icon: const Icon(Icons.clear),
         onPressed: () {
           setState(() {
             _isLongPressed = false;
@@ -93,11 +103,8 @@ class _DashboardState extends State<Dashboard> {
                               child: const Text('cancelar')),
                           TextButton(
                               onPressed: () {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const TelaLogin()));
+                                //logout
+                                logout();
                               },
                               child: const Text('sim')),
                         ],
@@ -263,8 +270,8 @@ class _DashboardState extends State<Dashboard> {
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
                               crossAxisCount: 2,
-                              crossAxisSpacing: 18,
-                              mainAxisSpacing: 18),
+                              crossAxisSpacing: 15,
+                              mainAxisSpacing: 15),
                       itemBuilder: (context, index) {
                         // setState(() {
                         //   if (_indexPressed == index) {
