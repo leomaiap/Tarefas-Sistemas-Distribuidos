@@ -30,14 +30,12 @@ class _PesquisaState extends State<Pesquisa> {
       int year, int month) async {
     List<DateTime> days = [];
 
-    // O primeiro dia do mês
+
     DateTime firstDayOfMonth = DateTime(year, month, 1);
 
-    // O primeiro dia do próximo mês
     DateTime firstDayOfNextMonth =
         month < 12 ? DateTime(year, month + 1, 1) : DateTime(year + 1, 1, 1);
 
-    // Adiciona cada dia do mês atual à lista
     for (DateTime day = firstDayOfMonth;
         day.isBefore(firstDayOfNextMonth);
         day = day.add(const Duration(days: 1))) {

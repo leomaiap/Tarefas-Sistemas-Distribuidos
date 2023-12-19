@@ -8,12 +8,14 @@ class TaskBoardCard extends StatefulWidget {
   int color;
   int icon;
   int taskBoardID;
+  final bool isLongPressed;
   TaskBoardCard(
       {super.key,
       required this.name,
       required this.color,
       required this.taskBoardID,
-      required this.icon});
+      required this.icon,
+      required this.isLongPressed});
 
   @override
   State<TaskBoardCard> createState() => _TaskBoardCardState();
@@ -38,6 +40,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
 
   late Color color1;
   late Color color2;
+  late Color color3;
 
   final db = DatabaseHelper();
 
@@ -47,6 +50,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
     _quantTarefas();
     color1 = colorsList[widget.color];
     color2 = modifyColor(colorsList[widget.color], -120);
+    color3 = modifyColor(colorsList[widget.color], -60);
   }
 
   String countTasks = '';
@@ -86,60 +90,68 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     IconData icon = IconLabel.values[widget.icon].icon;
+    print("id ${widget.taskBoardID}: ${widget.isLongPressed}");
     //double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-          padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(
-              color: color1,
-              borderRadius: BorderRadius.all(Radius.circular(screenWidth * 0.050))),
-          child: Container(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.symmetric(vertical: 5),
-                  child: Icon(
-                    icon,
-                    size: screenWidth * 0.12,
-                    color: color2,
-                  ),
-                ),
-                Container(
-                    alignment: Alignment.center,
-                    //padding: EdgeInsets.only(left: screenWidth * 0.025),
-                    child: Text(
-                      widget.name,
-                      style: TextStyle(
-                          fontSize: screenWidth * 0.06,
-                          fontWeight: FontWeight.bold,
-                          color: color2),
+      padding: EdgeInsets.all(8),
+      decoration: BoxDecoration(
+          color: !widget.isLongPressed ? color1 : color3,
+          borderRadius: BorderRadius.all(Radius.circular(screenWidth * 0.050))),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(vertical: 5),
+              child: Icon(
+                icon,
+                size: screenWidth * 0.12,
+                color: color2,
+              ),
+            ),
+            Container(
+                alignment: Alignment.center,
+                //padding: EdgeInsets.only(left: screenWidth * 0.025),
+                child: Text(
+                  widget.name,
+                  style: TextStyle(
+                      fontSize: screenWidth * 0.06,
+                      fontWeight: FontWeight.bold,
+                      color: color2),
                 )),
-                Container(
+            Container(
                 alignment: Alignment.center,
                 //padding: EdgeInsets.only(left: screenWidth * 0.015),
                 child: Text(
                   countTasks,
-                  style: TextStyle(
-                      fontSize: screenWidth * 0.032,
-                      color: color2),
+                  style:
+                      TextStyle(fontSize: screenWidth * 0.032, color: color2),
                 )),
-                totalTasks > 0 ? Padding(
-                  padding: const EdgeInsets.all(5),
-                  child: Column(
-                    children: [
-                      TaskProgressIndicatorDashboard(completedTasks: completeTasks, totalTasks: totalTasks, color: color2),
-                      Padding(
-                        padding: const EdgeInsets.all(2.0),
-                        child: Text('${((completeTasks/totalTasks)*100).round()}%', style: TextStyle(fontSize: 10, color: color2),),
-                      )
-                    ],
-                  ),
-                ) : Container()
-              ],
-            ),
-          ),
-        );
+            totalTasks > 0
+                ? Padding(
+                    padding: const EdgeInsets.all(5),
+                    child: Column(
+                      children: [
+                        TaskProgressIndicatorDashboard(
+                            completedTasks: completeTasks,
+                            totalTasks: totalTasks,
+                            color: color2),
+                        Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Text(
+                            '${((completeTasks / totalTasks) * 100).round()}%',
+                            style: TextStyle(fontSize: 10, color: color2),
+                          ),
+                        )
+                      ],
+                    ),
+                  )
+                : Container()
+          ],
+        ),
+      ),
+    );
   }
 }
 

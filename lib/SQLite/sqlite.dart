@@ -98,7 +98,7 @@ class DatabaseHelper {
     return id;
   }
 
-   Future<int> insertTaskBoardID(
+  Future<int> insertTaskBoardID(
       int idd, String name, int color, int icon, int userID) async {
     final Database db = await initDB();
 
@@ -180,7 +180,6 @@ class DatabaseHelper {
 
     return count as int;
   }
-
 
   // Método para obter todas as tasks concluídas associadas a um usuário e fazer JOIN com task_board
   Future<List<Map<String, dynamic>>> getCompletedTasks(int userId) async {
@@ -345,36 +344,30 @@ class DatabaseHelper {
     return result;
   }
 
-  Future<void> updateTask
-      (int taskId,
-      String title,
-      String note,
-      String startTime,
-      String endTime,
-      String date) async{
+  Future<void> updateTask(int taskId, String title, String note,
+      String startTime, String endTime, String date) async {
+    //print("TASK ID:");
+    //print(taskId);
+    //print(note);
 
-      //print("TASK ID:");
-      //print(taskId);
-      //print(note);
-
-      final Database db = await initDB();
-      await db.update(
-        'task',
-        {
-          'title': title,
-          'note': note,
-          'startTime': startTime,
-          'endTime': endTime,
-          'date': date,
-        },
-        where: 'id = ?',
-        whereArgs: [taskId],
-      );
+    final Database db = await initDB();
+    await db.update(
+      'task',
+      {
+        'title': title,
+        'note': note,
+        'startTime': startTime,
+        'endTime': endTime,
+        'date': date,
+      },
+      where: 'id = ?',
+      whereArgs: [taskId],
+    );
   }
 
-  Future<List<Map<String, dynamic?>>> getTaskDataById(int taskId) async{
+  Future<List<Map<String, dynamic?>>> getTaskDataById(int taskId) async {
     final Database db = await initDB();
-      List<Map<String, dynamic>> taskData = await db.rawQuery('''
+    List<Map<String, dynamic>> taskData = await db.rawQuery('''
       SELECT title AS name, startTime, endTime, note, date
       FROM task
       WHERE id = $taskId
@@ -382,4 +375,21 @@ class DatabaseHelper {
     return taskData;
   }
 
+  Future<void> updateTaskBoard(
+      int boardId, String name, int color, int icon) async {
+    final Database db = await initDB();
+    await db.update(
+      'task_board',
+      {"name": name, "color": color, "icon": icon},
+      where: 'id = ?',
+      whereArgs: [boardId],
+    );
+  }
+
+  Future<void> deleteTaskBoard(int boardId) async {
+    final Database db = await initDB();
+    await db.delete('task', where: "board_id = ?", whereArgs: [boardId]);
+    await db.delete('task_board', where: 'id = ?', whereArgs: [boardId]);
+    print("Deletado!");
+  }
 }
