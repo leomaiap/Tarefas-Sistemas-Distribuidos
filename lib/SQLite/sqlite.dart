@@ -169,6 +169,19 @@ class DatabaseHelper {
     return count as int;
   }
 
+  Future<int> getTaskCompleteCountByTaskBoard(int taskBoardId) async {
+    final Database db = await initDB();
+
+    int count = Sqflite.firstIntValue(await db.rawQuery(
+          'SELECT COUNT(*) FROM task WHERE board_id = ? AND isCompleted = 1',
+          [taskBoardId],
+        )) ??
+        0;
+
+    return count as int;
+  }
+
+
   // Método para obter todas as tasks concluídas associadas a um usuário e fazer JOIN com task_board
   Future<List<Map<String, dynamic>>> getCompletedTasks(int userId) async {
     final Database db = await initDB();

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:planner/SQLite/sqlite.dart';
+import 'package:planner/Widgets/progressIndicator.dart';
+import 'package:planner/Widgets/progressIndicatorDashboard.dart';
 
 class TaskBoardCard extends StatefulWidget {
   String name;
@@ -48,9 +50,14 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
   }
 
   String countTasks = '';
+  int totalTasks = 0;
+  int completeTasks = 0;
 
   _quantTarefas() async {
     int count = await db.getTaskCountByTaskBoard(widget.taskBoardID);
+    int comp = await db.getTaskCompleteCountByTaskBoard(widget.taskBoardID);
+    totalTasks = count;
+    completeTasks = comp;
     setState(() {
       if (count == 0) {
         countTasks = "Não há tarefas";
@@ -78,7 +85,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    IconData icon = IconLabel.values[widget.icon!].icon;
+    IconData icon = IconLabel.values[widget.icon].icon;
     //double screenHeight = MediaQuery.of(context).size.height;
     return Container(
           padding: EdgeInsets.all(8),
@@ -91,7 +98,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 15),
+                  margin: EdgeInsets.symmetric(vertical: 5),
                   child: Icon(
                     icon,
                     size: screenWidth * 0.12,
@@ -100,7 +107,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
                 ),
                 Container(
                     alignment: Alignment.center,
-                    padding: EdgeInsets.only(left: screenWidth * 0.025),
+                    //padding: EdgeInsets.only(left: screenWidth * 0.025),
                     child: Text(
                       widget.name,
                       style: TextStyle(
@@ -110,13 +117,25 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
                 )),
                 Container(
                 alignment: Alignment.center,
-                padding: EdgeInsets.only(left: screenWidth * 0.025),
+                //padding: EdgeInsets.only(left: screenWidth * 0.015),
                 child: Text(
                   countTasks,
                   style: TextStyle(
-                      fontSize: screenWidth * 0.03,
+                      fontSize: screenWidth * 0.032,
                       color: color2),
                 )),
+                totalTasks > 0 ? Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Column(
+                    children: [
+                      TaskProgressIndicatorDashboard(completedTasks: completeTasks, totalTasks: totalTasks, color: color2),
+                      Padding(
+                        padding: const EdgeInsets.all(2.0),
+                        child: Text('${((completeTasks/totalTasks)*100).round()}%', style: TextStyle(fontSize: 10, color: color2),),
+                      )
+                    ],
+                  ),
+                ) : Container()
               ],
             ),
           ),
@@ -133,7 +152,7 @@ enum IconLabel {
   fun('Diversão', Icons.tv),
   shopping('Compras', Icons.shopping_cart),
   meeting('Reunião', Icons.group),
-  Aniversario('Aniversario', Icons.cake),
+  aniversario('Aniversario', Icons.cake),
   assignment('Atribuição', Icons.assignment),
   travel('Viagem', Icons.flight_takeoff),
   coding('Programação', Icons.code),

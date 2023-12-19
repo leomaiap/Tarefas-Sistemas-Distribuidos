@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/newTask.dart';
+import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
 
 import '../userSession.dart';
@@ -42,7 +43,21 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
   @override
   void initState() {
     super.initState();
+    _quantTarefas();
     futureTaskList = _getTaskList();
+  }
+
+  int totalTasks = 0;
+  int completeTasks = 0;
+
+  _quantTarefas() async {
+    int count = await db.getTaskCountByTaskBoard(widget.taskBoardID);
+    int comp = await db.getTaskCompleteCountByTaskBoard(widget.taskBoardID);
+    totalTasks = count;
+    completeTasks = comp;
+    setState(() {
+      
+    });
   }
 
   Future<List<Map<String, dynamic>>> _getTaskList() async {
@@ -71,18 +86,26 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
         centerTitle: true,
       ),
 
-      body: FutureBuilder<List<Map<String, dynamic>>>(
-        future: futureTaskList,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Container();
-          } else if (snapshot.hasError) {
-            return Text('Erro: ${snapshot.error}');
-          } else {
-            List<Map<String, dynamic>> listTask = snapshot.data!;
-            return TaskListBuilder(removeIfComplete: false, list: listTask);
-          }
-        },
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: TaskProgressIndicator(completedTasks: completeTasks, totalTasks: totalTasks),
+          ),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: futureTaskList,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container();
+              } else if (snapshot.hasError) {
+                return Text('Erro: ${snapshot.error}');
+              } else {
+                List<Map<String, dynamic>> listTask = snapshot.data!;
+                return Expanded(child: TaskListBuilder(removeIfComplete: false, list: listTask));
+              }
+            },
+          ),
+        ],
       ),
 
       floatingActionButton: FloatingActionButton.extended(
