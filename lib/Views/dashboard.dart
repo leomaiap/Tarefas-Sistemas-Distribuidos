@@ -284,11 +284,14 @@ class _DashboardState extends State<Dashboard> {
 
                         return GestureDetector(
                           onTap: () {
-                            snapshotData[index]["islongpressed"] = false;
-                            _indexPressed = null;
-                            _isLongPressed = false;
-
-                            Navigator.pushReplacement(
+                            if(_isLongPressed){
+                              snapshotData[index]["islongpressed"] = false;
+                              _indexPressed = null;
+                              _isLongPressed = false;
+                              setState(() {});
+                            }
+                            else{
+                              Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => OpenTaskBoard(
@@ -299,7 +302,9 @@ class _DashboardState extends State<Dashboard> {
                                 ),
                               ),
                             );
-                          },
+                          }
+                            
+                        },
                           onLongPress: () {
                             boardPressed["name"] =
                                 snapshot.data![index]['name'];
