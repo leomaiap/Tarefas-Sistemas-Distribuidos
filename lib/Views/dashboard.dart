@@ -152,10 +152,13 @@ class _DashboardState extends State<Dashboard> {
                                   await db.deleteTaskBoard(boardPressed["id"]);
                                   taskBoardsFuture = db.getTaskBoardsByUserId(
                                       UserSession.getID());
-                                  setState(() {});
+                                  setState(() {
+                                    _isLongPressed = false;
+                                    _indexPressed = null;
+                                  });
                                 });
                                 Navigator.pop(context);
-                                print(boardPressed["id"]);
+                                //print(boardPressed["id"]);
                               },
                               child: const Text('sim')),
                         ],
