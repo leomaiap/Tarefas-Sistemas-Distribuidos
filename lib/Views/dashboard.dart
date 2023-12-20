@@ -158,6 +158,34 @@ class _DashboardState extends State<Dashboard> {
                                     _indexPressed = null;
                                   });
                                 });
+                                Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      children: [
+                                        Icon(Icons.check, color: Colors.white),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Quadro deletado com sucesso!",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.all(5),
+                                    elevation: 4,
+                                    duration: Duration(seconds: 4),
+                                  ),
+                                );
                                 Navigator.pop(context);
                                 //print(boardPressed["id"]);
                               },
@@ -285,27 +313,26 @@ class _DashboardState extends State<Dashboard> {
 
                         return GestureDetector(
                           onTap: () {
-                            if(_isLongPressed){
+                            if (_isLongPressed) {
                               snapshotData[index]["islongpressed"] = false;
                               _indexPressed = null;
                               _isLongPressed = false;
                               setState(() {});
-                            }
-                            else{
+                            } else {
                               Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => OpenTaskBoard(
-                                  name: snapshot.data![index]['name'],
-                                  color: snapshot.data![index]['color'] as int,
-                                  taskBoardID:
-                                      snapshot.data![index]['id'] as int,
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => OpenTaskBoard(
+                                    name: snapshot.data![index]['name'],
+                                    color:
+                                        snapshot.data![index]['color'] as int,
+                                    taskBoardID:
+                                        snapshot.data![index]['id'] as int,
+                                  ),
                                 ),
-                              ),
-                            );
-                          }
-                            
-                        },
+                              );
+                            }
+                          },
                           onLongPress: () {
                             boardPressed["name"] =
                                 snapshot.data![index]['name'];
@@ -327,12 +354,17 @@ class _DashboardState extends State<Dashboard> {
                           },
                           child: Container(
                             child: TaskBoardCard(
-                                name: snapshot.data![index]['name'],
-                                color: snapshot.data![index]['color'] as int,
-                                icon: snapshot.data![index]['icon'] as int,
-                                taskBoardID: snapshot.data![index]['id'] as int,
-                                isLongPressed: snapshotData[index]
-                                    ["isLongPressed"]).animate().fadeIn(delay: ((index)*20).ms).fade(),
+                                    name: snapshot.data![index]['name'],
+                                    color:
+                                        snapshot.data![index]['color'] as int,
+                                    icon: snapshot.data![index]['icon'] as int,
+                                    taskBoardID:
+                                        snapshot.data![index]['id'] as int,
+                                    isLongPressed: snapshotData[index]
+                                        ["isLongPressed"])
+                                .animate()
+                                .fadeIn(delay: ((index) * 20).ms)
+                                .fade(),
                           ),
                         );
                       },

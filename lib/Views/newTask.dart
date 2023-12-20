@@ -8,15 +8,17 @@ class NewTask extends StatefulWidget {
   String nameBoard;
   int color;
   int taskBoardID;
-  NewTask({super.key, required this.nameBoard, required this.color, required this.taskBoardID});
+  NewTask(
+      {super.key,
+      required this.nameBoard,
+      required this.color,
+      required this.taskBoardID});
 
   @override
   State<NewTask> createState() => _NewTaskState();
 }
 
-
 class _NewTaskState extends State<NewTask> {
-
   List<Color> colorsList = [
     Color(0xFFD7423D),
     Color(0xFFFFE066),
@@ -51,60 +53,74 @@ class _NewTaskState extends State<NewTask> {
 
   final db = DatabaseHelper();
 
-  String getDateDisplay(){
-    if(dateVazio){return "  Data: Não selecionada ainda.";}
+  String getDateDisplay() {
+    if (dateVazio) {
+      return "  Data: Não selecionada ainda.";
+    }
     return "  Data: " + date;
   }
 
-  String getStartDateDisplay(){
-    if(startTimeVazio){return "  Start Time: Não selecionado ainda.";}
-    return "  Start Time: " + startTime;
+  String getStartDateDisplay() {
+    if (startTimeVazio) {
+      return "  Horário inicial: Não selecionado ainda.";
+    }
+    return "  Horário inicial: " + startTime;
   }
 
-  String getEndDateDisplay(){
-    if(endTimeVazio){return "  End Time: Não selecionado ainda.";}
-    return "  End Time: " + endTime;
+  String getEndDateDisplay() {
+    if (endTimeVazio) {
+      return "  Horário final: Não selecionado ainda.";
+    }
+    return "  Horário final: " + endTime;
   }
 
-  void updateDate(DateTime? dt){
-    if(dt==null){return;}
+  void updateDate(DateTime? dt) {
+    if (dt == null) {
+      return;
+    }
     setState(() {
       dateVazio = false;
       date = dt.toString().split(' ')[0];
     });
   }
 
-  void updateStart(TimeOfDay? dt){
-    if(dt==null){return;}
+  void updateStart(TimeOfDay? dt) {
+    if (dt == null) {
+      return;
+    }
     setState(() {
       startTimeVazio = false;
       startTime = dt.toString().split('(')[1].replaceAll(')', '');
     });
   }
 
-  void updateEnd(TimeOfDay? dt){
-    if(dt==null){return;}
+  void updateEnd(TimeOfDay? dt) {
+    if (dt == null) {
+      return;
+    }
     setState(() {
       endTimeVazio = false;
       endTime = dt.toString().split('(')[1].replaceAll(')', '');
     });
   }
 
-  void _showDatePicker(){
-    showDatePicker(context: context, initialDate: DateTime.now(),
-        firstDate: DateTime(2000), lastDate:  DateTime(2030)).then((value) => updateDate(value));
+  void _showDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(2000),
+            lastDate: DateTime(2030))
+        .then((value) => updateDate(value));
   }
 
-  void _showStartPicker(){
-    showTimePicker(context: context, initialTime:  TimeOfDay.now()).then(
-            (value) => updateStart(value)
-    );
+  void _showStartPicker() {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((value) => updateStart(value));
   }
 
-  void _showEndPicker(){
-    showTimePicker(context: context, initialTime:  TimeOfDay.now()).then(
-            (value) => updateEnd(value)
-    );
+  void _showEndPicker() {
+    showTimePicker(context: context, initialTime: TimeOfDay.now())
+        .then((value) => updateEnd(value));
   }
 
   @override
@@ -112,189 +128,239 @@ class _NewTaskState extends State<NewTask> {
     //double screenWidth = MediaQuery.of(context).size.width;
     //double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: colorsList[widget.color],
-        title: Text("Nova Tarefa", style: TextStyle(
-          fontWeight: FontWeight.bold
-        ),),
-        leading:
-          IconButton(
+        appBar: AppBar(
+          backgroundColor: colorsList[widget.color],
+          title: Text(
+            "Nova Tarefa",
+            style: TextStyle(fontWeight: FontWeight.normal),
+          ),
+          leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => OpenTaskBoard(
-            name: widget.nameBoard,
-            color: widget.color,
-            taskBoardID: widget.taskBoardID,
-          )));
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => OpenTaskBoard(
+                            name: widget.nameBoard,
+                            color: widget.color,
+                            taskBoardID: widget.taskBoardID,
+                          )));
             },
           ),
-        
-        centerTitle: true,
-      ),
-      body: Container(
-        //color: colorsList[selectColorIndex],
-        padding: EdgeInsets.symmetric(horizontal: 30),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+          centerTitle: true,
+        ),
+        body: Container(
+            //color: colorsList[selectColorIndex],
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  //NOME DA TAREFA
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      hintText: "Nome da tarefa",
+                    ),
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.normal,
+                        color: const Color.fromARGB(255, 0, 0, 0)),
+                    controller: nomeController,
+                    onChanged: (String value) {
+                      nome = value;
+                      //print(nome);
+                      setState(() {
+                        nomeVazio = value.isEmpty;
+                      });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
 
-              //NOME DA TAREFA
-              TextFormField(
-                keyboardType: TextInputType.text,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  hintText: "Nome da tarefa",
-                ),
-                style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: const Color.fromARGB(255, 0, 0, 0)),
-                controller: nomeController,
-                onChanged: (String value) {
-                  nome = value;
-                  //print(nome);
-                  setState(() {
-                    nomeVazio = value.isEmpty;
-                  });
-                },
-              ),
-              const SizedBox(height: 20,),
-
-              //PICK DATE
-              Center(
-                child: SizedBox(
-                  width:335,
-                  child: MaterialButton(onPressed: (){_showDatePicker();},
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                        child: Text("Pick Date",
-                        style: TextStyle(
-                          color:Colors.white,
-                          fontSize:25
-                            )
+                  //PICK DATE
+                  Center(
+                    child: SizedBox(
+                      width: 335,
+                      child: MaterialButton(
+                        onPressed: () {
+                          _showDatePicker();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(4),
+                          child: Text("Escolher Data",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        color: colorsList[widget.color],
                       ),
                     ),
-                      color: colorsList[widget.color],
-
                   ),
-                ),
-              ),
-              Center(
-                child: Text(getDateDisplay(),
-                  style: TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-
-                  ),
-                ),
-              ),
-              const SizedBox(height: 10,),
-
-              //PICK START TIME
-              Center(
-                child: SizedBox(
-                  width:335,
-                  child: MaterialButton(onPressed: (){_showStartPicker();},
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Text("Pick Start Time",
-                          style: TextStyle(
-                              color:Colors.white,
-                              fontSize:25
-                          )
+                  Center(
+                    child: Text(
+                      getDateDisplay(),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    color: colorsList[widget.color],
-
                   ),
-                ),
-              ),
-              Center(
-                child: Text(getStartDateDisplay(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-
+                  const SizedBox(
+                    height: 10,
                   ),
-                ),
-              ),
-              const SizedBox(height: 10,),
 
-              //PICK END TIME
-              Center(
-                child: SizedBox(
-                  width:335,
-                  child: MaterialButton(onPressed: (){_showEndPicker();},
-                    child: Padding(
-                      padding: EdgeInsets.all(4),
-                      child: Text("Pick End Time",
-                          style: TextStyle(
-                              color:Colors.white,
-                              fontSize:25
-                          )
+                  //PICK START TIME
+                  Center(
+                    child: SizedBox(
+                      width: 335,
+                      child: MaterialButton(
+                        onPressed: () {
+                          _showStartPicker();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(4),
+                          child: Text("Horário Inicial",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        color: colorsList[widget.color],
                       ),
                     ),
-                    color: colorsList[widget.color],
-
                   ),
-                ),
-              ),
-              Center(
-                child: Text(getEndDateDisplay(),
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-
+                  Center(
+                    child: Text(
+                      getStartDateDisplay(),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              const SizedBox(height: 25,),
+                  const SizedBox(
+                    height: 10,
+                  ),
 
-              //WRITE NOTE
-              const Text("  Nota sobre tarefa:",
-              style: TextStyle(
-                fontSize: 21,
-                fontWeight: FontWeight.bold,
+                  //PICK END TIME
+                  Center(
+                    child: SizedBox(
+                      width: 335,
+                      child: MaterialButton(
+                        onPressed: () {
+                          _showEndPicker();
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(4),
+                          child: Text("Horário final",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 20)),
+                        ),
+                        color: colorsList[widget.color],
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Text(
+                      getEndDateDisplay(),
+                      style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 25,
+                  ),
 
-              ),
-              ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                maxLines: 4,
-                decoration: const InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    border: OutlineInputBorder(borderSide: BorderSide(color: Colors.black12))
-                ),
-                style: const TextStyle(
-                    fontSize: 25,
-                    color: Color.fromARGB(255, 0, 0, 0)),
-                controller: noteController,
-                onChanged: (String value) {
-                  note = value;
-                },
-              ),
-              const SizedBox(height: 35,),
+                  //WRITE NOTE
+                  const Text(
+                    "  Nota sobre tarefa:",
+                    style: TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  TextFormField(
+                    keyboardType: TextInputType.text,
+                    maxLines: 4,
+                    decoration: const InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        border: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.black12))),
+                    style: const TextStyle(
+                        fontSize: 15, color: Color.fromARGB(255, 0, 0, 0)),
+                    controller: noteController,
+                    onChanged: (String value) {
+                      note = value;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 35,
+                  ),
 
-              //CRIAR TAREFA
-              Center(
-                child: ElevatedButton(onPressed: (nomeVazio || endTimeVazio || startTimeVazio || dateVazio)
-                      ? null
-                      : () {
-                  int userID = UserSession.getID();
-                  db.insertTask(nome, note, 0, startTime, endTime, date, widget.taskBoardID, userID); //toda atividade inicia marcada como incompleta
-                  Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => MainPage()));
-                }, child: const Text("CRIAR TAREFA")),
-              )
-            ],
-          ),
-        )
-      )
-    );
+                  //CRIAR TAREFA
+                  Center(
+                    child: ElevatedButton(
+                        onPressed: (nomeVazio ||
+                                endTimeVazio ||
+                                startTimeVazio ||
+                                dateVazio)
+                            ? null
+                            : () {
+                                int userID = UserSession.getID();
+                                db.insertTask(
+                                    nome,
+                                    note,
+                                    0,
+                                    startTime,
+                                    endTime,
+                                    date,
+                                    widget.taskBoardID,
+                                    userID); //toda atividade inicia marcada como incompleta
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => MainPage()));
+                                Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      children: [
+                                        Icon(Icons.check, color: Colors.white),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Tarefa criada!",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: const EdgeInsets.all(5),
+                                    elevation: 4,
+                                    duration: const Duration(seconds: 4),
+                                  ),
+                                );
+                              },
+                        child: const Text("CRIAR TAREFA")),
+                  )
+                ],
+              ),
+            )));
   }
 }

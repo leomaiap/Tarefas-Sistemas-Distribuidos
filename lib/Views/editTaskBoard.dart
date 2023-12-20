@@ -251,6 +251,34 @@ class _EditTaskBoardState extends State<EditTaskBoard> {
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MainPage()));
+                                Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      children: [
+                                        Icon(Icons.check, color: Colors.white),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Quadro editado com sucesso!",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.all(5),
+                                    elevation: 4,
+                                    duration: Duration(seconds: 4),
+                                  ),
+                                );
                               },
                         child: const Text("Salvar"))
                   ],

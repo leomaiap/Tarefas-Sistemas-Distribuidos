@@ -23,7 +23,6 @@ class MyApp extends StatelessWidget {
     return prefs.getBool('isLoggedIn') ?? false;
   }
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,5 +58,4 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
-  
 }

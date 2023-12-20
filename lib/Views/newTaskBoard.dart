@@ -48,7 +48,7 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
 
     return Color.fromARGB(255, red, green, blue);
   }
-  
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -80,12 +80,10 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                     TextField(
                       keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        labelText: 'Nome TaskBoard',
-                        prefixIcon: Icon(Icons.add),
-                        border: OutlineInputBorder(),
-                        filled:false
-                        
-                      ),
+                          labelText: 'Nome TaskBoard',
+                          prefixIcon: Icon(Icons.add),
+                          border: OutlineInputBorder(),
+                          filled: false),
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
@@ -103,7 +101,10 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                       padding: EdgeInsets.all(15),
                       margin: EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                        color: Theme.of(context)
+                            .colorScheme
+                            .primary
+                            .withOpacity(0.1),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Column(
@@ -113,8 +114,11 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                               child: Text(
                                 "Selecione uma cor",
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.onBackground),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground),
                               )),
                           //Selcao de cor
                           SizedBox(
@@ -139,66 +143,78 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                                       width: 30,
                                       height: 30,
                                       decoration: BoxDecoration(
-                                        color:
-                                            colorsList[index % colorsList.length],
-                                        borderRadius: BorderRadius.circular(150),
+                                        color: colorsList[
+                                            index % colorsList.length],
+                                        borderRadius:
+                                            BorderRadius.circular(150),
                                       ),
                                       child: selectColorIndex == index
                                           ? Icon(
                                               Icons.check_circle,
-                                              color: Theme.of(context).colorScheme.background,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .background,
                                             )
                                           : null,
                                     ),
                                   );
                                 },
                               )),
-                      Container(
+                          Container(
                               margin: EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 "Selecione um ícone",
                                 style: TextStyle(
-                                    fontSize: 15, fontWeight: FontWeight.bold,
-                                    color: Theme.of(context).colorScheme.onBackground),
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onBackground),
                               )),
-                      
-                      //selecao de icone
-                      Container(
-                        width: screenWidth,
-                        height: 170,
-                        child: GridView.builder(
-                          itemCount: IconLabel.values.length,
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 8,
-                            crossAxisSpacing: 4,
-                            mainAxisSpacing: 8,
-                          ),
-                          itemBuilder: (context, index) {
-                            final icon = IconLabel.values[index];
-                            return GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  selectedIcon = icon;
-                                  _iconeVazio = icon == null ? true : icon.label.isEmpty;
-                                });
-                              },
-                              child: Container(
-                                width: 30,
-                                height: 30,
-                                decoration: BoxDecoration(
-                                  color: selectedIcon == icon
-                                ? colorsList[selectColorIndex]
-                                : Theme.of(context).colorScheme.background,
-                                  borderRadius: BorderRadius.circular(150),
-                                ),
-                                child: Icon(icon.icon,
-                                color: modifyColor(colorsList[selectColorIndex], -120)
-                               ),
+
+                          //selecao de icone
+                          Container(
+                            width: screenWidth,
+                            height: 170,
+                            child: GridView.builder(
+                              itemCount: IconLabel.values.length,
+                              gridDelegate:
+                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 8,
+                                crossAxisSpacing: 4,
+                                mainAxisSpacing: 8,
                               ),
-                            );
-                          },
-                        ),
-                      ),
+                              itemBuilder: (context, index) {
+                                final icon = IconLabel.values[index];
+                                return GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selectedIcon = icon;
+                                      _iconeVazio = icon == null
+                                          ? true
+                                          : icon.label.isEmpty;
+                                    });
+                                  },
+                                  child: Container(
+                                    width: 30,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: selectedIcon == icon
+                                          ? colorsList[selectColorIndex]
+                                          : Theme.of(context)
+                                              .colorScheme
+                                              .background,
+                                      borderRadius: BorderRadius.circular(150),
+                                    ),
+                                    child: Icon(icon.icon,
+                                        color: modifyColor(
+                                            colorsList[selectColorIndex],
+                                            -120)),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ],
                       ),
                     ),
@@ -209,10 +225,39 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                                 db.insertTaskBoard(nome, selectColorIndex,
                                     selectedIcon!.index, UserSession.getID());
                                 print("$nome $selectColorIndex");
+
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
                                         builder: (context) => MainPage()));
+                                Future.delayed(
+                                  const Duration(milliseconds: 500),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Row(
+                                      children: [
+                                        Icon(Icons.check, color: Colors.white),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: Text(
+                                            "Quadro adicionado com sucesso!",
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    backgroundColor: Colors.green,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    behavior: SnackBarBehavior.floating,
+                                    margin: EdgeInsets.all(5),
+                                    elevation: 4,
+                                    duration: Duration(seconds: 4),
+                                  ),
+                                );
                               },
                         child: Text("CRIAR QUADRO"))
                   ],

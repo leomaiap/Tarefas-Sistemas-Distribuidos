@@ -72,40 +72,43 @@ class _TaskExpanderState extends State<TaskExpander> {
     Colors.grey.shade50
   ];
 
-  void editWidget() async{
+  void editWidget() async {
     //botão edit task chama essa função
 
     //Esta função chama (usando push, não push named) o código para atualizar uma tarefa
     //como não é o push named, o código do updateTask usa o 'Navigator.pop' para voltar para esta página
     //com o contexto que ela estava no momento em que o botão foi apertado
     await Navigator.push(
-        context, MaterialPageRoute(builder: (context) => UpdateTask(
-        taskId: widget.id,
-        color: widget.color,
-        endTime: widget.endTime,
-        date: toUpdateFormat(widget.date),
-        startTime: widget.startTime,
-        nome: widget.title,
-        note: widget.note
-    )));
+        context,
+        MaterialPageRoute(
+            builder: (context) => UpdateTask(
+                taskId: widget.id,
+                color: widget.color,
+                endTime: widget.endTime,
+                date: toUpdateFormat(widget.date),
+                startTime: widget.startTime,
+                nome: widget.title,
+                note: widget.note)));
 
     //depois, carrega denova os dados do banco de dados
-      List<Map<String, dynamic>> rawQuery = await db.getTaskDataById(widget.id);
-      Map<String,dynamic> updatedData = rawQuery[0];
-      widget.title = updatedData['name'];
-      widget.note = updatedData['note'];
-      widget.endTime = updatedData['endTime'];
-      widget.startTime = updatedData['startTime'];
-      String date =  updatedData['date'];
-      int year = int.parse(date.split('-')[0]);
-      int month = int.parse(date.split('-')[1]);
-      int day = int.parse(date.split('-')[2]);
-      DateTime dt = DateTime(year,month,day);
-      widget.date = dt;
-      setState(() {});
+    List<Map<String, dynamic>> rawQuery = await db.getTaskDataById(widget.id);
+    Map<String, dynamic> updatedData = rawQuery[0];
+    widget.title = updatedData['name'];
+    widget.note = updatedData['note'];
+    widget.endTime = updatedData['endTime'];
+    widget.startTime = updatedData['startTime'];
+    String date = updatedData['date'];
+    int year = int.parse(date.split('-')[0]);
+    int month = int.parse(date.split('-')[1]);
+    int day = int.parse(date.split('-')[2]);
+    DateTime dt = DateTime(year, month, day);
+    widget.date = dt;
+    setState(() {});
+    
   }
 
-  String toUpdateFormat(DateTime dt){ //função converte de volta do dateTime para o formato que a classe updateTask usa
+  String toUpdateFormat(DateTime dt) {
+    //função converte de volta do dateTime para o formato que a classe updateTask usa
     //print('DT');
     //print(dt);
     return dt.toString().split(' ')[0];
@@ -378,6 +381,38 @@ class _TaskExpanderState extends State<TaskExpander> {
                                         widget.onDelete(widget.indexListTask);
                                         print('APAGAR');
                                         Navigator.pop(context);
+                                        Future.delayed(
+                                          const Duration(milliseconds: 500),
+                                        );
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: const Row(
+                                              children: [
+                                                Icon(Icons.check,
+                                                    color: Colors.white),
+                                                SizedBox(width: 8),
+                                                Expanded(
+                                                  child: Text(
+                                                    "Tarefa apagada!",
+                                                    style: TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                            backgroundColor: Colors.green,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(20),
+                                            ),
+                                            behavior: SnackBarBehavior.floating,
+                                            margin: const EdgeInsets.all(5),
+                                            elevation: 4,
+                                            duration:
+                                                const Duration(seconds: 4),
+                                          ),
+                                        );
                                       },
                                       child: Text('sim')),
                                 ],
@@ -385,11 +420,14 @@ class _TaskExpanderState extends State<TaskExpander> {
                             });
                       },
                       minWidth: MediaQuery.of(context).size.width / 5,
-                      child: Text("Apagar", style: TextStyle(fontSize: 12),),
+                      child: Text(
+                        "Apagar",
+                        style: TextStyle(fontSize: 12),
+                      ),
                       color: color2,
                       textColor: color1,
                     ),
-                    
+
                     Divider(
                       indent: 6,
                     ),
@@ -397,28 +435,35 @@ class _TaskExpanderState extends State<TaskExpander> {
                     MaterialButton(
                       onPressed: editWidget,
                       minWidth: MediaQuery.of(context).size.width / 5,
-                      child: Text("Editar", style: TextStyle(fontSize: 12),),
+                      child: Text(
+                        "Editar",
+                        style: TextStyle(fontSize: 12),
+                      ),
                       color: color2,
                       textColor: color1,
                     ),
-                    
+
                     Divider(
                       indent: 6,
                     ),
                     //Concluido
                     widget.isCompleted == 0
                         ? MaterialButton(
-                      onPressed: () {
-                        //isComplete do banco de dados
-                        widget.onCompleted(widget.indexListTask);
-                        db.completeTask(widget.id);
-                        print('Complete');
-                      },
-                      minWidth: MediaQuery.of(context).size.width / 5,
-                      child: Text("Concluído", style: TextStyle(fontSize: 12),),
-                      color: color2,
-                      textColor: color1,
-                    ) : Container(),
+                            onPressed: () {
+                              //isComplete do banco de dados
+                              widget.onCompleted(widget.indexListTask);
+                              db.completeTask(widget.id);
+                              print('Complete');
+                            },
+                            minWidth: MediaQuery.of(context).size.width / 5,
+                            child: Text(
+                              "Concluído",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                            color: color2,
+                            textColor: color1,
+                          )
+                        : Container(),
                   ],
                 ),
               )
