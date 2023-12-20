@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:planner/Widgets/emptyTask.dart';
 import 'package:planner/taskList/taskExpanderWidget.dart';
 
@@ -92,7 +93,7 @@ class _TaskListBuilderState extends State<TaskListBuilder> {
               color: listTask[index]['color'] as int,
               icon: listTask[index]['icon'] as int,
               indexListTask: index,
-            ),
+            ).animate().fade(delay: ((index)*35).ms),
           );
         },
       ),

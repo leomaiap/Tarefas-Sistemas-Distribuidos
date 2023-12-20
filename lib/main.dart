@@ -5,8 +5,10 @@ import 'package:planner/Page/mainPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:planner/userSession.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 
 void main() {
+  Animate.restartOnHotReload = true;
   Intl.defaultLocale = 'pt_BR';
   runApp(const MyApp());
 }

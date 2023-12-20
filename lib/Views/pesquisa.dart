@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:planner/Autenticador/login.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
@@ -186,7 +187,7 @@ class _PesquisaState extends State<Pesquisa> {
                   eventLoader: (DateTime day) {
                     return _currentMonth.value[day] ?? [];
                   },
-                ),
+                ).animate().fade(duration: 500.ms),
               Expanded(
                 child: FutureBuilder<List<Map<String, dynamic>>>(
                   future: futureSelectedTasks,

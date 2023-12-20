@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/Widgets/progressIndicatorDashboard.dart';
@@ -90,7 +91,12 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width - 40;
     IconData icon = IconLabel.values[widget.icon].icon;
-    print("id ${widget.taskBoardID}: ${widget.isLongPressed}");
+    // if (widget.isLongPressed) {
+    //   controller.forward();
+    // } else {
+    //   controller.stop();
+    // }
+    //print("id ${widget.taskBoardID}: ${widget.isLongPressed}");
     return Stack(
       children: [
         
@@ -160,6 +166,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
         ) : Container()
       ],
     );
+    //.rotate(begin: -0.991, end: -1.01, curve: Curves.easeInOut, duration: 600.ms,);
   }
 }
 

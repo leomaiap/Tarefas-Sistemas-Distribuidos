@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_animate/flutter_animate.dart';
 import 'package:planner/Autenticador/login.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/exampleData.dart';
@@ -331,7 +332,7 @@ class _DashboardState extends State<Dashboard> {
                                 icon: snapshot.data![index]['icon'] as int,
                                 taskBoardID: snapshot.data![index]['id'] as int,
                                 isLongPressed: snapshotData[index]
-                                    ["isLongPressed"]),
+                                    ["isLongPressed"]).animate().fadeIn(delay: ((index)*20).ms).fade(),
                           ),
                         );
                       },
