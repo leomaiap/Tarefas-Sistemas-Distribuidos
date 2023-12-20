@@ -43,7 +43,7 @@ class _CadastroState extends State<Cadastro> {
                 //AS
 
                 Container(
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       icon: Icon(Icons.person),
                       border: InputBorder.none,
                       hintText: "Usuário",
@@ -194,7 +194,7 @@ class _CadastroState extends State<Cadastro> {
                           });
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "CRIAR CONTA",
                         style: TextStyle(color: Colors.white),
                       )),

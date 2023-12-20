@@ -1,6 +1,4 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:planner/Autenticador/login.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
@@ -42,7 +40,7 @@ class _ConcluidasState extends State<Concluidas> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text(
+        title: const Text(
           'Tarefas Concluídas',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
@@ -61,15 +59,17 @@ class _ConcluidasState extends State<Concluidas> {
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 15),
-                  child: TaskProgressIndicator(completedTasks: completedTasks, totalTasks: totalTasks),
+                  child: TaskProgressIndicator(
+                      completedTasks: completedTasks, totalTasks: totalTasks),
                 ),
-                Expanded(child: TaskListBuilder(removeIfComplete: false, list: listTask)),
+                Expanded(
+                    child: TaskListBuilder(
+                        removeIfComplete: false, list: listTask)),
               ],
             );
           }
         },
       ),
-
     );
   }
 }

@@ -14,13 +14,13 @@ class DayCard extends StatelessWidget {
       return Container(
           decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primary,
-          borderRadius: BorderRadius.all(Radius.circular(8))
+          borderRadius: const BorderRadius.all(Radius.circular(8))
         ),
         child: Container(
           child:Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text("${DateFormat.MMM().format(day)}", style: TextStyle(
+              Text(DateFormat.MMM().format(day), style: TextStyle(
                 fontSize: screenWidth*0.03,
                 color: Colors.white
               ),),
@@ -30,7 +30,7 @@ class DayCard extends StatelessWidget {
                 color: Colors.white
               ),),
               Icon(Icons.circle, size: 7, color: hasTask ? Theme.of(context).colorScheme.primaryContainer : Colors.transparent),
-              Text("${DateFormat.E().format(day)}", style: TextStyle(
+              Text(DateFormat.E().format(day), style: TextStyle(
                 fontSize: screenWidth*0.03,
                 color: Colors.white))
             ],
@@ -41,14 +41,14 @@ class DayCard extends StatelessWidget {
     }
     else{
       return Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
         color: Colors.transparent
       ),
       child: Container(
         child:Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text("${DateFormat.MMM().format(day)}", style: TextStyle(
+            Text(DateFormat.MMM().format(day), style: TextStyle(
               fontSize: screenWidth*0.03,
               
             ),),
@@ -58,7 +58,7 @@ class DayCard extends StatelessWidget {
               
             ),),
             Icon(Icons.circle, size: 7, color: hasTask ? Theme.of(context).colorScheme.primary : Colors.transparent),
-            Text("${DateFormat.E().format(day)}")
+            Text(DateFormat.E().format(day))
           ],
         )
       ),

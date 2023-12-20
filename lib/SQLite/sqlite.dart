@@ -166,7 +166,7 @@ class DatabaseHelper {
         )) ??
         0;
 
-    return count as int;
+    return count;
   }
 
   Future<int> getTaskCompleteCountByTaskBoard(int taskBoardId) async {
@@ -178,7 +178,7 @@ class DatabaseHelper {
         )) ??
         0;
 
-    return count as int;
+    return count;
   }
 
   // Método para obter todas as tasks concluídas associadas a um usuário e fazer JOIN com task_board
@@ -278,7 +278,7 @@ class DatabaseHelper {
     List<String> days = monthDays.map((DateTime day) {
       return day.toString().split(' ')[0];
     }).toList();
-    String inClause = '(' + List.filled(days.length, '?').join(', ') + ')';
+    String inClause = '(${List.filled(days.length, '?').join(', ')})';
 
     final Database db = await initDB();
     List<Map<String, dynamic>> dayTasks = await db.query(
@@ -365,7 +365,7 @@ class DatabaseHelper {
     );
   }
 
-  Future<List<Map<String, dynamic?>>> getTaskDataById(int taskId) async {
+  Future<List<Map<String, dynamic>>> getTaskDataById(int taskId) async {
     final Database db = await initDB();
     List<Map<String, dynamic>> taskData = await db.rawQuery('''
       SELECT title AS name, startTime, endTime, note, date

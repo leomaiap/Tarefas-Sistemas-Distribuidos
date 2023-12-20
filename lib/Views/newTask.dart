@@ -20,18 +20,18 @@ class NewTask extends StatefulWidget {
 
 class _NewTaskState extends State<NewTask> {
   List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -57,21 +57,21 @@ class _NewTaskState extends State<NewTask> {
     if (dateVazio) {
       return "  Data: Não selecionada ainda.";
     }
-    return "  Data: " + date;
+    return "  Data: $date";
   }
 
   String getStartDateDisplay() {
     if (startTimeVazio) {
       return "  Horário inicial: Não selecionado ainda.";
     }
-    return "  Horário inicial: " + startTime;
+    return "  Horário inicial: $startTime";
   }
 
   String getEndDateDisplay() {
     if (endTimeVazio) {
       return "  Horário final: Não selecionado ainda.";
     }
-    return "  Horário final: " + endTime;
+    return "  Horário final: $endTime";
   }
 
   void updateDate(DateTime? dt) {
@@ -130,12 +130,12 @@ class _NewTaskState extends State<NewTask> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: colorsList[widget.color],
-          title: Text(
+          title: const Text(
             "Nova Tarefa",
             style: TextStyle(fontWeight: FontWeight.normal),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushReplacement(
                   context,
@@ -151,7 +151,7 @@ class _NewTaskState extends State<NewTask> {
         ),
         body: Container(
             //color: colorsList[selectColorIndex],
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -163,15 +163,15 @@ class _NewTaskState extends State<NewTask> {
                   //NOME DA TAREFA
                   TextFormField(
                     keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       hintText: "Nome da tarefa",
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.normal,
-                        color: const Color.fromARGB(255, 0, 0, 0)),
+                        color: Color.fromARGB(255, 0, 0, 0)),
                     controller: nomeController,
                     onChanged: (String value) {
                       nome = value;
@@ -193,20 +193,20 @@ class _NewTaskState extends State<NewTask> {
                         onPressed: () {
                           _showDatePicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Escolher Data",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
                       getDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -224,20 +224,20 @@ class _NewTaskState extends State<NewTask> {
                         onPressed: () {
                           _showStartPicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Horário Inicial",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
                       getStartDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -255,20 +255,20 @@ class _NewTaskState extends State<NewTask> {
                         onPressed: () {
                           _showEndPicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Horário final",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
                       getEndDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -327,7 +327,7 @@ class _NewTaskState extends State<NewTask> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MainPage()));
+                                        builder: (context) => const MainPage()));
                                 Future.delayed(
                                   const Duration(milliseconds: 500),
                                 );

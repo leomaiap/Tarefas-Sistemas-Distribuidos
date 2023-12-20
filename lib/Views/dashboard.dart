@@ -7,7 +7,6 @@ import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/editTaskBoard.dart';
 import 'package:planner/Views/newTaskBoard.dart';
 import 'package:planner/Views/openTaskBoard.dart';
-import 'package:planner/Widgets/emptyTask.dart';
 import 'package:planner/Widgets/emptyDashboard.dart';
 import 'package:planner/userSession.dart';
 import 'package:planner/widgets/taskboardWidget.dart';
@@ -80,7 +79,7 @@ class _DashboardState extends State<Dashboard> {
         leading: leadingWidget,
         title: Text(
           !_isLongPressed ? 'Dashboard' : "",
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         actions: [
           if (!_isLongPressed) ...[
@@ -148,7 +147,7 @@ class _DashboardState extends State<Dashboard> {
                               },
                               child: const Text('cancelar')),
                           TextButton(
-                              onPressed: () {
+                              onPressed: () { 
                                 Future.delayed(Duration.zero, () async {
                                   await db.deleteTaskBoard(boardPressed["id"]);
                                   taskBoardsFuture = db.getTaskBoardsByUserId(
@@ -181,9 +180,9 @@ class _DashboardState extends State<Dashboard> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     behavior: SnackBarBehavior.floating,
-                                    margin: EdgeInsets.all(5),
+                                    margin: const EdgeInsets.all(5),
                                     elevation: 4,
-                                    duration: Duration(seconds: 4),
+                                    duration: const Duration(seconds: 4),
                                   ),
                                 );
                                 Navigator.pop(context);
@@ -259,7 +258,7 @@ class _DashboardState extends State<Dashboard> {
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => MainPage()));
+                                builder: (context) => const MainPage()));
                       }
                     },
                     child: const EmptyDashboard(),

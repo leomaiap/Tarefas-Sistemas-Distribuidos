@@ -32,8 +32,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: const [
-        Locale('pt', 'BR'), // Português do Brasil
-        // ... outros idiomas suportados
+        Locale('pt', 'BR'),
       ],
       debugShowCheckedModeBanner: false,
       title: 'Planner',
@@ -47,7 +46,7 @@ class MyApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             // Verifica se o usuário está logado
             if (snapshot.data == true) {
-              return MainPage();
+              return const MainPage();
             } else {
               return const TelaLogin();
             }

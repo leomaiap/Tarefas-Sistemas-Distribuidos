@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Widgets/taskboardWidget.dart';
-import 'package:planner/userSession.dart';
 
 class EditTaskBoard extends StatefulWidget {
   final String nome;
@@ -83,8 +82,8 @@ class _EditTaskBoardState extends State<EditTaskBoard> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
-              Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => MainPage()));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const MainPage()));
             },
           ),
           centerTitle: true,
@@ -193,7 +192,7 @@ class _EditTaskBoardState extends State<EditTaskBoard> {
                               )),
 
                           //selecao de icone
-                          Container(
+                          SizedBox(
                             width: screenWidth,
                             height: 170,
                             child: GridView.builder(
@@ -250,7 +249,8 @@ class _EditTaskBoardState extends State<EditTaskBoard> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MainPage()));
+                                        builder: (context) =>
+                                            const MainPage()));
                                 Future.delayed(
                                   const Duration(milliseconds: 500),
                                 );
@@ -274,9 +274,9 @@ class _EditTaskBoardState extends State<EditTaskBoard> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     behavior: SnackBarBehavior.floating,
-                                    margin: EdgeInsets.all(5),
+                                    margin: const EdgeInsets.all(5),
                                     elevation: 4,
-                                    duration: Duration(seconds: 4),
+                                    duration: const Duration(seconds: 4),
                                   ),
                                 );
                               },

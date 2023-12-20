@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
-import 'package:planner/Views/openTaskBoard.dart';
-import 'package:planner/userSession.dart';
 
 class UpdateTask extends StatefulWidget {
   int color;
@@ -30,18 +27,18 @@ class UpdateTask extends StatefulWidget {
 
 class _UpdateTaskState extends State<UpdateTask> {
   List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -59,15 +56,15 @@ class _UpdateTaskState extends State<UpdateTask> {
   final db = DatabaseHelper();
 
   String getDateDisplay() {
-    return "  Data: " + widget.date;
+    return "  Data: ${widget.date}";
   }
 
   String getStartDateDisplay() {
-    return "  Horário inicial: " + widget.startTime;
+    return "  Horário inicial: ${widget.startTime}";
   }
 
   String getEndDateDisplay() {
-    return "  Horário final: " + widget.endTime;
+    return "  Horário final: ${widget.endTime}";
   }
 
   String getPossiblyNullValue(String? s) {
@@ -139,12 +136,12 @@ class _UpdateTaskState extends State<UpdateTask> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: colorsList[widget.color],
-          title: Text(
+          title: const Text(
             "Editar Tarefa",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pop(context);
             },
@@ -153,7 +150,7 @@ class _UpdateTaskState extends State<UpdateTask> {
         ),
         body: Container(
             //color: colorsList[selectColorIndex],
-            padding: EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -166,15 +163,15 @@ class _UpdateTaskState extends State<UpdateTask> {
                   //NOME DA TAREFA
                   TextFormField(
                     keyboardType: TextInputType.text,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
                       hintText: "Nome da tarefa",
                     ),
-                    style: TextStyle(
+                    style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.normal,
-                        color: const Color.fromARGB(255, 0, 0, 0)),
+                        color: Color.fromARGB(255, 0, 0, 0)),
                     controller: nomeController,
                     onChanged: (String value) {
                       //print(nome);
@@ -198,13 +195,13 @@ class _UpdateTaskState extends State<UpdateTask> {
                         onPressed: () {
                           _showDatePicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Escolher Data",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
@@ -212,7 +209,7 @@ class _UpdateTaskState extends State<UpdateTask> {
                   Center(
                     child: Text(
                       getDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -230,20 +227,20 @@ class _UpdateTaskState extends State<UpdateTask> {
                         onPressed: () {
                           _showStartPicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Horário inicial",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
                       getStartDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),
@@ -261,20 +258,20 @@ class _UpdateTaskState extends State<UpdateTask> {
                         onPressed: () {
                           _showEndPicker();
                         },
-                        child: Padding(
+                        color: colorsList[widget.color],
+                        child: const Padding(
                           padding: EdgeInsets.all(4),
                           child: Text("Horário final",
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20)),
                         ),
-                        color: colorsList[widget.color],
                       ),
                     ),
                   ),
                   Center(
                     child: Text(
                       getEndDateDisplay(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
                       ),

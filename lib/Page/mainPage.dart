@@ -1,13 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/concluidas.dart';
 import 'package:planner/Views/dashboard.dart';
 import 'package:planner/Views/pesquisa.dart';
 import 'package:planner/Views/recentes.dart';
 
 class MainPage extends StatefulWidget {
-  MainPage({super.key});
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -15,7 +13,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int indexPage = 0;
-  final pages = [Dashboard(), Pesquisa(), Concluidas(), Recentes()];
+  final pages = [const Dashboard(), const Pesquisa(), const Concluidas(), const Recentes()];
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +31,7 @@ class _MainPageState extends State<MainPage> {
                 indexPage = value;
               });
             },
-            destinations: [
+            destinations: const [
               NavigationDestination(
                 icon: Icon(Icons.dashboard_outlined),
                 label: 'Dashboard',

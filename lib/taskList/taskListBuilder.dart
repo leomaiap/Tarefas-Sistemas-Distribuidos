@@ -34,7 +34,7 @@ class _TaskListBuilderState extends State<TaskListBuilder> {
     setState(() {
       ignoreIndex.add(index);
     });
-    print(listTask);
+    print(listTask); 
   }
 
   //editado - atualizar edicao na lista
@@ -60,7 +60,7 @@ class _TaskListBuilderState extends State<TaskListBuilder> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(15,20,15,15),
       child: listTask.isEmpty
-                ? Center(
+                ? const Center(
                     child: EmptyList()
                   )
                 :  
@@ -68,7 +68,7 @@ class _TaskListBuilderState extends State<TaskListBuilder> {
         itemCount: listTask.length, //list.lenth
         itemBuilder: (context, index) {
           if (ignoreIndex.contains(index)) {
-            return SizedBox.shrink();
+            return const SizedBox.shrink();
           }
           return GestureDetector(
             onTap: () {

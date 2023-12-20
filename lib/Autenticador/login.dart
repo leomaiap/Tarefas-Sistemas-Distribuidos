@@ -36,7 +36,7 @@ class _TelaLoginState extends State<TelaLogin> {
       if (!mounted) return;
       //Se o login tiver correto, vai p o dashboard
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
+          context, MaterialPageRoute(builder: (context) => const MainPage()));
     } else {
       //Se o login n tiver correto, mostra msg de erro
       setState(() {
@@ -79,7 +79,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         icon: Icon(Icons.person),
                         border: InputBorder.none,
                         hintText: "Usuário",
@@ -136,7 +136,7 @@ class _TelaLoginState extends State<TelaLogin> {
                             login();
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           "LOGIN",
                           style: TextStyle(color: Colors.white),
                         )),

@@ -5,7 +5,6 @@ import 'package:planner/Views/newTask.dart';
 import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
 
-import '../userSession.dart';
 
 class OpenTaskBoard extends StatefulWidget {
   String name;
@@ -18,18 +17,18 @@ class OpenTaskBoard extends StatefulWidget {
 }
 
 List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -71,15 +70,15 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
         backgroundColor: colorsList[widget.color],
-        title: Text(widget.name, style: TextStyle(
+        title: Text(widget.name, style: const TextStyle(
           fontWeight: FontWeight.bold
         ),),
         leading:
           IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) =>  MainPage()));
+          context, MaterialPageRoute(builder: (context) =>  const MainPage()));
             },
           ),
         
@@ -109,7 +108,7 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.task),
+        icon: const Icon(Icons.task),
         onPressed: () {
           Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => NewTask(
@@ -117,7 +116,7 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
             color: widget.color,
             taskBoardID: widget.taskBoardID)));
         },
-        label: Text('Nova Tarefa'),),
+        label: const Text('Nova Tarefa'),),
       );
   }
 }

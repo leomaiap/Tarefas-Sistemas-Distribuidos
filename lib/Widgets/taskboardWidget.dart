@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:planner/SQLite/sqlite.dart';
-import 'package:planner/Widgets/progressIndicator.dart';
 import 'package:planner/Widgets/progressIndicatorDashboard.dart';
 
 class TaskBoardCard extends StatefulWidget {
@@ -24,18 +22,18 @@ class TaskBoardCard extends StatefulWidget {
 
 class _TaskBoardCardState extends State<TaskBoardCard> {
   List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -101,7 +99,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
       children: [
         
         Container(
-          padding: EdgeInsets.all(6),
+          padding: const EdgeInsets.all(6),
           decoration: BoxDecoration(
               color: !widget.isLongPressed ? color1 : color3,
               borderRadius: BorderRadius.all(Radius.circular(screenWidth * 0.050))),
@@ -111,7 +109,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
-                  margin: EdgeInsets.symmetric(vertical: 4),
+                  margin: const EdgeInsets.symmetric(vertical: 4),
                   child: Icon(
                     icon,
                     size: screenWidth * 0.10,
@@ -161,7 +159,7 @@ class _TaskBoardCardState extends State<TaskBoardCard> {
           ),
         ),
         widget.isLongPressed ? Container(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           child: Icon(Icons.check_circle, color: Colors.white, size: screenWidth * 0.06),
         ) : Container()
       ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:planner/SQLite/sqlite.dart';
-import 'package:planner/Views/newTask.dart';
 import 'package:planner/Views/updateTask.dart';
 import 'package:planner/Widgets/taskboardWidget.dart';
 
@@ -57,18 +56,18 @@ class _TaskExpanderState extends State<TaskExpander> {
   }
 
   List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -132,11 +131,11 @@ class _TaskExpanderState extends State<TaskExpander> {
     if (widget.expand) {
       return Container(
         decoration: BoxDecoration(
-            color: color1, borderRadius: BorderRadius.all(Radius.circular(20))),
-        margin: EdgeInsets.symmetric(vertical: 6),
+            color: color1, borderRadius: const BorderRadius.all(Radius.circular(20))),
+        margin: const EdgeInsets.symmetric(vertical: 6),
         //height: 100,
         child: Container(
-            padding: EdgeInsets.all(15),
+            padding: const EdgeInsets.all(15),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -155,7 +154,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                       children: [
                         //Data da tarefa
                         Container(
-                          margin: EdgeInsets.only(right: 15),
+                          margin: const EdgeInsets.only(right: 15),
                           child: Row(
                             children: [
                               //Dia
@@ -166,11 +165,11 @@ class _TaskExpanderState extends State<TaskExpander> {
                                     fontSize: 13,
                                     fontWeight: FontWeight.bold),
                               ),
-                              Divider(
+                              const Divider(
                                 indent: 4,
                               ),
                               Icon(Icons.alarm, color: color2, size: 13),
-                              Divider(
+                              const Divider(
                                 indent: 2,
                               ),
                               //hora
@@ -193,7 +192,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                                     size: 13,
                                     color: color2,
                                   ),
-                                  Divider(
+                                  const Divider(
                                     indent: 2,
                                   ),
                                   Text(
@@ -211,7 +210,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                                     size: 15,
                                     color: color2,
                                   ),
-                                  Divider(
+                                  const Divider(
                                     indent: 2,
                                   ),
                                   Text(
@@ -240,14 +239,14 @@ class _TaskExpanderState extends State<TaskExpander> {
       return Container(
           decoration: BoxDecoration(
               color: color1,
-              borderRadius: BorderRadius.all(Radius.circular(20))),
-          margin: EdgeInsets.symmetric(vertical: 6),
+              borderRadius: const BorderRadius.all(Radius.circular(20))),
+          margin: const EdgeInsets.symmetric(vertical: 6),
           //height: 320,
           child: Container(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Container(
-                padding: EdgeInsets.fromLTRB(15, 15, 15, 2),
+                padding: const EdgeInsets.fromLTRB(15, 15, 15, 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   //Icone title pendente
@@ -259,7 +258,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                           color: color2,
                           size: 34,
                         ),
-                        Divider(
+                        const Divider(
                           indent: 6,
                         ),
                         Text(widget.title,
@@ -296,7 +295,7 @@ class _TaskExpanderState extends State<TaskExpander> {
                 ),
               ),
               Container(
-                padding: EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 15),
                 child: Row(
                   children: [
                     Text(
@@ -306,11 +305,11 @@ class _TaskExpanderState extends State<TaskExpander> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold),
                     ),
-                    Divider(
+                    const Divider(
                       indent: 4,
                     ),
                     Icon(Icons.alarm, color: color2, size: 13),
-                    Divider(
+                    const Divider(
                       indent: 2,
                     ),
                     Text(
@@ -325,10 +324,10 @@ class _TaskExpanderState extends State<TaskExpander> {
               ),
               //Anotation
               Container(
-                margin: EdgeInsets.fromLTRB(15, 6, 15, 0),
-                padding: EdgeInsets.all(9),
+                margin: const EdgeInsets.fromLTRB(15, 6, 15, 0),
+                padding: const EdgeInsets.all(9),
                 //height: 180,
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     color: Colors.white38),
                 child: Column(
@@ -355,8 +354,8 @@ class _TaskExpanderState extends State<TaskExpander> {
               ),
               //Botoes
               Container(
-                margin: EdgeInsets.all(3),
-                padding: EdgeInsets.fromLTRB(15, 6, 0, 6),
+                margin: const EdgeInsets.all(3),
+                padding: const EdgeInsets.fromLTRB(15, 6, 0, 6),
                 child: Row(
                   children: [
                     // Botão Apagar
@@ -367,14 +366,14 @@ class _TaskExpanderState extends State<TaskExpander> {
                             context: context,
                             builder: (context) {
                               return AlertDialog(
-                                title: Text('Apagar'),
-                                content: Text('Deseja apagar?'),
+                                title: const Text('Apagar'),
+                                content: const Text('Deseja apagar?'),
                                 actions: [
                                   TextButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      child: Text('cancelar')),
+                                      child: const Text('cancelar')),
                                   TextButton(
                                       onPressed: () {
                                         db.deleteTask(widget.id);
@@ -414,36 +413,36 @@ class _TaskExpanderState extends State<TaskExpander> {
                                           ),
                                         );
                                       },
-                                      child: Text('sim')),
+                                      child: const Text('sim')),
                                 ],
                               );
                             });
                       },
                       minWidth: MediaQuery.of(context).size.width / 5,
-                      child: Text(
+                      color: color2,
+                      textColor: color1,
+                      child: const Text(
                         "Apagar",
                         style: TextStyle(fontSize: 12),
                       ),
-                      color: color2,
-                      textColor: color1,
                     ),
 
-                    Divider(
+                    const Divider(
                       indent: 6,
                     ),
                     //EDITAR
                     MaterialButton(
                       onPressed: editWidget,
                       minWidth: MediaQuery.of(context).size.width / 5,
-                      child: Text(
+                      color: color2,
+                      textColor: color1,
+                      child: const Text(
                         "Editar",
                         style: TextStyle(fontSize: 12),
                       ),
-                      color: color2,
-                      textColor: color1,
                     ),
 
-                    Divider(
+                    const Divider(
                       indent: 6,
                     ),
                     //Concluido
@@ -456,12 +455,12 @@ class _TaskExpanderState extends State<TaskExpander> {
                               print('Complete');
                             },
                             minWidth: MediaQuery.of(context).size.width / 5,
-                            child: Text(
+                            color: color2,
+                            textColor: color1,
+                            child: const Text(
                               "Concluído",
                               style: TextStyle(fontSize: 12),
                             ),
-                            color: color2,
-                            textColor: color1,
                           )
                         : Container(),
                   ],

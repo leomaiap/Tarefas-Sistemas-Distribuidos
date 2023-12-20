@@ -22,18 +22,18 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
   final db = DatabaseHelper();
 
   List<Color> colorsList = [
-    Color(0xFFD7423D),
-    Color(0xFFFFE066),
-    Color(0xFFFFBA59),
-    Color(0xFFFF8C8C),
-    Color(0xFFFF99E5),
-    Color(0xFFC3A6FF),
-    Color(0xFF9FBCF5),
-    Color(0xFF8CE2FF),
-    Color(0xFF87F5B5),
-    Color(0xFFBCF593),
-    Color(0xFFE2F587),
-    Color(0xFFD9BCAD),
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
     Colors.grey.shade50
   ];
 
@@ -56,15 +56,15 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
     return Scaffold(
         appBar: AppBar(
           //backgroundColor: colorsList[selectColorIndex],
-          title: Text(
+          title: const Text(
             "Novo Quadro de Tarefas",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushReplacement(
-                  context, MaterialPageRoute(builder: (context) => MainPage()));
+                  context, MaterialPageRoute(builder: (context) => const MainPage()));
             },
           ),
           centerTitle: true,
@@ -73,21 +73,21 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
           child: SingleChildScrollView(
             child: Container(
                 //color: colorsList[selectColorIndex],
-                padding: EdgeInsets.symmetric(horizontal: 30),
+                padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     TextField(
                       keyboardType: TextInputType.text,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                           labelText: 'Nome TaskBoard',
                           prefixIcon: Icon(Icons.add),
                           border: OutlineInputBorder(),
                           filled: false),
-                      style: TextStyle(
+                      style: const TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
-                          color: const Color.fromARGB(255, 0, 0, 0)),
+                          color: Color.fromARGB(255, 0, 0, 0)),
                       controller: nomeController,
                       onChanged: (String value) {
                         nome = value;
@@ -98,8 +98,8 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                       },
                     ),
                     Container(
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.symmetric(vertical: 8),
+                      padding: const EdgeInsets.all(15),
+                      margin: const EdgeInsets.symmetric(vertical: 8),
                       decoration: BoxDecoration(
                         color: Theme.of(context)
                             .colorScheme
@@ -110,7 +110,7 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                       child: Column(
                         children: [
                           Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 "Selecione uma cor",
                                 style: TextStyle(
@@ -127,7 +127,7 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                               child: GridView.builder(
                                 itemCount: 12,
                                 gridDelegate:
-                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
                                         crossAxisCount: 6,
                                         crossAxisSpacing: 5,
                                         mainAxisSpacing: 5),
@@ -161,7 +161,7 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                                 },
                               )),
                           Container(
-                              margin: EdgeInsets.symmetric(vertical: 5),
+                              margin: const EdgeInsets.symmetric(vertical: 5),
                               child: Text(
                                 "Selecione um ícone",
                                 style: TextStyle(
@@ -173,13 +173,13 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                               )),
 
                           //selecao de icone
-                          Container(
+                          SizedBox(
                             width: screenWidth,
                             height: 170,
                             child: GridView.builder(
                               itemCount: IconLabel.values.length,
                               gridDelegate:
-                                  SliverGridDelegateWithFixedCrossAxisCount(
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
                                 crossAxisCount: 8,
                                 crossAxisSpacing: 4,
                                 mainAxisSpacing: 8,
@@ -229,7 +229,7 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                                 Navigator.pushReplacement(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => MainPage()));
+                                        builder: (context) => const MainPage()));
                                 Future.delayed(
                                   const Duration(milliseconds: 500),
                                 );
@@ -253,13 +253,13 @@ class _NewTaskBoardState extends State<NewTaskBoard> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
                                     behavior: SnackBarBehavior.floating,
-                                    margin: EdgeInsets.all(5),
+                                    margin: const EdgeInsets.all(5),
                                     elevation: 4,
-                                    duration: Duration(seconds: 4),
+                                    duration: const Duration(seconds: 4),
                                   ),
                                 );
                               },
-                        child: Text("CRIAR QUADRO"))
+                        child: const Text("CRIAR QUADRO"))
                   ],
                 )),
           ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:planner/Autenticador/login.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/taskList/taskListBuilder.dart';
 import 'package:planner/userSession.dart';
