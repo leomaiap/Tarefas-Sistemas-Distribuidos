@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
 import 'package:planner/Views/newTask.dart';
+import 'package:planner/Widgets/progressIndicator.dart';
+import 'package:planner/taskList/taskListBuilder.dart';
+
 
 class OpenTaskBoard extends StatefulWidget {
   String name;
@@ -14,70 +17,98 @@ class OpenTaskBoard extends StatefulWidget {
 }
 
 List<Color> colorsList = [
-      Colors.red,
-      Colors.orange,
-      Colors.yellow,
-      Colors.green,
-      Colors.lightGreen,
-      Colors.lightBlue,
-      Colors.blueAccent,
-      Colors.purple,
-      Colors.deepPurple,
-      Colors.pinkAccent,
-      Colors.pink,
-      Colors.brown,
-      Colors.grey,
-      Colors.blueGrey
-    ];
+    const Color(0xFFD7423D),
+    const Color(0xFFFFE066),
+    const Color(0xFFFFBA59),
+    const Color(0xFFFF8C8C),
+    const Color(0xFFFF99E5),
+    const Color(0xFFC3A6FF),
+    const Color(0xFF9FBCF5),
+    const Color(0xFF8CE2FF),
+    const Color(0xFF87F5B5),
+    const Color(0xFFBCF593),
+    const Color(0xFFE2F587),
+    const Color(0xFFD9BCAD),
+    Colors.grey.shade50
+  ];
 
 
 
 class _OpenTaskBoardState extends State<OpenTaskBoard> {
   final db = DatabaseHelper();
-  List<Map<String, dynamic>> taskList = [];
+  List<Map<String, dynamic>> listTask = [];
+  late Future<List<Map<String, dynamic>>> futureTaskList;
 
   @override
   void initState() {
     super.initState();
-    // pegar dados do banco de dados
-    _getTaskDB(widget.taskBoardID);
+    _quantTarefas();
+    futureTaskList = _getTaskList();
   }
 
-  _getTaskDB(int taskBoardID) async{
-    // taskList recebe as tasks que tem taskBoardID como referencia
-    // get do banco de dados
+  int totalTasks = 0;
+  int completeTasks = 0;
+
+  _quantTarefas() async {
+    int count = await db.getTaskCountByTaskBoard(widget.taskBoardID);
+    int comp = await db.getTaskCompleteCountByTaskBoard(widget.taskBoardID);
+    totalTasks = count;
+    completeTasks = comp;
+    setState(() {
+      
+    });
   }
+
+  Future<List<Map<String, dynamic>>> _getTaskList() async {
+    List<Map<String, dynamic>> list =
+        await db.getTasksByTaskBoard(widget.taskBoardID);
+    return list;
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(
         backgroundColor: colorsList[widget.color],
-        title: Text(widget.name, style: TextStyle(
+        title: Text(widget.name, style: const TextStyle(
           fontWeight: FontWeight.bold
         ),),
         leading:
           IconButton(
-            icon: Icon(Icons.arrow_back_ios_new),
+            icon: const Icon(Icons.arrow_back_ios_new),
             onPressed: () {
               Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) =>  MainPage()));
+          context, MaterialPageRoute(builder: (context) =>  const MainPage()));
             },
           ),
         
         centerTitle: true,
       ),
 
-      body:Container(
-        decoration: BoxDecoration(
-          color: colorsList[widget.color].withOpacity(0.5)
-        ),
-        child: Text("Implementar"),
-        // Listview builder no taskList
-        // Criar um widget TaskWidget(parametros construtor...),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 15),
+            child: TaskProgressIndicator(completedTasks: completeTasks, totalTasks: totalTasks),
+          ),
+          FutureBuilder<List<Map<String, dynamic>>>(
+            future: futureTaskList,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return Container();
+              } else if (snapshot.hasError) {
+                return Text('Erro: ${snapshot.error}');
+              } else {
+                List<Map<String, dynamic>> listTask = snapshot.data!;
+                return Expanded(child: TaskListBuilder(removeIfComplete: false, list: listTask));
+              }
+            },
+          ),
+        ],
       ),
 
       floatingActionButton: FloatingActionButton.extended(
-        icon: Icon(Icons.task),
+        icon: const Icon(Icons.task),
         onPressed: () {
           Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => NewTask(
@@ -85,7 +116,7 @@ class _OpenTaskBoardState extends State<OpenTaskBoard> {
             color: widget.color,
             taskBoardID: widget.taskBoardID)));
         },
-        label: Text('Nova Tarefa'),),
+        label: const Text('Nova Tarefa'),),
       );
   }
 }

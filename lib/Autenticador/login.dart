@@ -3,8 +3,8 @@ import 'package:planner/Autenticador/cadastrar.dart';
 import 'package:planner/JsonModels/usuarios.dart';
 import 'package:planner/Page/mainPage.dart';
 import 'package:planner/SQLite/sqlite.dart';
-import 'package:planner/Views/dashboard.dart';
 import 'package:planner/userSession.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -27,10 +27,16 @@ class _TelaLoginState extends State<TelaLogin> {
       var userId = await db.getIdByName(usuario.text);
       print(userId);
       UserSession.setID(userId!);
-      //Se o login tiver correto, vai p o dashboard
+      // Salva o estado do usuário como logado
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setBool('isLoggedIn', true);
+      prefs.setInt('userId', userId);
+      
+      print("LOGIN SALVO");
       if (!mounted) return;
+      //Se o login tiver correto, vai p o dashboard
       Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (context) => MainPage()));
+          context, MaterialPageRoute(builder: (context) => const MainPage()));
     } else {
       //Se o login n tiver correto, mostra msg de erro
       setState(() {
@@ -73,7 +79,7 @@ class _TelaLoginState extends State<TelaLogin> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         icon: Icon(Icons.person),
                         border: InputBorder.none,
                         hintText: "Usuário",
@@ -130,7 +136,7 @@ class _TelaLoginState extends State<TelaLogin> {
                             login();
                           }
                         },
-                        child: Text(
+                        child: const Text(
                           "LOGIN",
                           style: TextStyle(color: Colors.white),
                         )),

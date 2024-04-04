@@ -43,7 +43,7 @@ class _CadastroState extends State<Cadastro> {
                 //AS
 
                 Container(
-                  margin: EdgeInsets.all(8),
+                  margin: const EdgeInsets.all(8),
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                   decoration: BoxDecoration(
@@ -57,7 +57,7 @@ class _CadastroState extends State<Cadastro> {
                       }
                       return null;
                     },
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       icon: Icon(Icons.person),
                       border: InputBorder.none,
                       hintText: "Usuário",
@@ -154,21 +154,47 @@ class _CadastroState extends State<Cadastro> {
                           //METODO DO LOGIN CMC AQUI
 
                           final db = DatabaseHelper();
-                            db
-                                .signup(Usuarios(
-                                    usrName: usuario.text,
-                                    usrPassword: senha.text))
-                                .whenComplete(() {
-                              //Depois de criar conta com sucesso volta p tela de login
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const TelaLogin()));
-                            });
+                          db
+                              .signup(Usuarios(
+                                  usrName: usuario.text,
+                                  usrPassword: senha.text))
+                              .whenComplete(() {
+                            //Depois de criar conta com sucesso volta p tela de login
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const TelaLogin()));
+                            Future.delayed(
+                              const Duration(milliseconds: 500),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: const Row(
+                                  children: [
+                                    Icon(Icons.check, color: Colors.white),
+                                    SizedBox(width: 8),
+                                    Expanded(
+                                      child: Text(
+                                        "Usuário cadastrado com sucesso!",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                backgroundColor: Colors.green,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                behavior: SnackBarBehavior.floating,
+                                margin: const EdgeInsets.all(5),
+                                elevation: 4,
+                                duration: const Duration(seconds: 4),
+                              ),
+                            );
+                          });
                         }
                       },
-                      child: Text(
+                      child: const Text(
                         "CRIAR CONTA",
                         style: TextStyle(color: Colors.white),
                       )),
