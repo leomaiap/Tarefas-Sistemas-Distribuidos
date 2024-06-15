@@ -1,1 +1,1 @@
-Planner De Tarefas
+Tarefas
